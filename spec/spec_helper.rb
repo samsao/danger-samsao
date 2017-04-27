@@ -17,6 +17,10 @@ RSpec.configure do |config|
   config.tty = true
 end
 
+Dir["#{File.expand_path('../matchers', __FILE__)}/*.rb"].each do |file|
+  require file
+end
+
 # rubocop:disable Lint/NestedMethodDefinition
 def testing_ui
   @output = StringIO.new
@@ -40,12 +44,13 @@ def testing_env
     'BITRISE_PULL_REQUEST' => '92',
     'DANGER_GITHUB_API_BASE_URL' => 'https://api.github.com',
     'DANGER_GITHUB_API_TOKEN' => ENV['DANGER_GITHUB_API_TOKEN'],
-    'GIT_REPOSITORY_URL' => 'git@github.com:samsao/verdant.git'
+    'GIT_REPOSITORY_URL' => 'git@github.com:samsao/verdant.git',
   }
 end
 
 # A stubbed out Dangerfile for use in tests
 def testing_dangerfile
   env = Danger::EnvironmentManager.new(testing_env)
+
   Danger::Dangerfile.new(env, testing_ui)
 end

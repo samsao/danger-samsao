@@ -1,4 +1,4 @@
-Copyright (c) 2017 Matthieu Vachon <mvachon@samsao.co>
+Copyright (c) 2017 Samsao Development Inc. <mvachon@samsao.co>
 
 MIT License
 

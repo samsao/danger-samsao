@@ -8,8 +8,14 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Max: 120
 
+Style/SignalException:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
+
+Style/WordArray:
+  Enabled: false

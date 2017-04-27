@@ -1,10 +1,7 @@
-# A guardfile for making Danger Plugins
-# For more info see https://github.com/guard/guard#readme
-
-# To run, use `bundle exec guard`.
 
 guard :rspec, cmd: 'bundle exec rspec' do
   require 'guard/rspec/dsl'
+
   dsl = Guard::RSpec::Dsl.new(self)
 
   # RSpec files

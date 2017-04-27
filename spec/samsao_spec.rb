@@ -12,22 +12,52 @@ module Danger
         @plugin = @dangerfile.samsao
       end
 
-      it 'Warns on a monday' do
-        monday_date = Date.parse('2016-07-11')
-        allow(Date).to receive(:today).and_return monday_date
+      describe 'samsao_config' do
+        it 'can configure single source' do
+          @plugin.config do
+            sources 'app/src'
+          end
 
-        @plugin.warn_on_mondays
+          expect(@plugin.config.sources).to eq(['app/src'])
+        end
 
-        expect(@dangerfile.status_report[:warnings]).to eq(['Trying to merge code on a Monday'])
+        it 'can configure multiple sources' do
+          @plugin.config do
+            sources 'app/src', 'lib/src'
+          end
+
+          expect(@plugin.config.sources).to eq(['app/src', 'lib/src'])
+        end
       end
 
-      it 'Does nothing on a tuesday' do
-        monday_date = Date.parse('2016-07-12')
-        allow(Date).to receive(:today).and_return monday_date
+      describe 'branching model' do
+        it 'continues on fix/ prefix' do
+          allow(@plugin.github).to receive(:branch_for_head).and_return('fix/bug')
+          @plugin.fail_when_wrong_branching_model
 
-        @plugin.warn_on_mondays
+          expect(@dangerfile).to have_no_error
+        end
 
-        expect(@dangerfile.status_report[:warnings]).to eq([])
+        it 'continues on feature/ prefix' do
+          allow(@plugin.github).to receive(:branch_for_head).and_return('feature/12')
+          @plugin.fail_when_wrong_branching_model
+
+          expect(@dangerfile).to have_no_error
+        end
+
+        it 'continues on release/ prefix' do
+          allow(@plugin.github).to receive(:branch_for_head).and_return('release/12')
+          @plugin.fail_when_wrong_branching_model
+
+          expect(@dangerfile).to have_no_error
+        end
+
+        it 'fails on wrong prefix' do
+          allow(@plugin.github).to receive(:branch_for_head).and_return('wrong/12')
+          @plugin.fail_when_wrong_branching_model
+
+          expect(@dangerfile).to have_error('Your branch should be prefixed with feature/, fix/ or release/!')
+        end
       end
     end
   end

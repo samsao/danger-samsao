@@ -65,6 +65,20 @@ module Danger
       git_branch.start_with?('fix/')
     end
 
+    # Return true if the current PR branch is a release branch
+    #
+    # @return [void]
+    def release_branch?
+      git_branch.start_with?('release/')
+    end
+
+    # Return true if the current PR branch is a trivial branch
+    #
+    # @return [void]
+    def trivial_branch?
+      git_branch.start_with?('trivial/')
+    end
+
     # Return true if any source files are in the git modified files list.
     #
     # @return [void]
@@ -83,7 +97,7 @@ module Danger
     end
 
     def respects_branching_model
-      git_branch =~ %r{(feature|fix|release|trivial)/.*}
+      feature_branch? || fix_branch? || release_branch? || trivial_branch?
     end
   end
 end

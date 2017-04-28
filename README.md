@@ -19,6 +19,11 @@ your `Dangerfile` under the `samsao` namespace.
    * [Branching Model](#branching-model)
    * [CHANGELOG update missing](#changelog-update-missing)
    * [Feature branch multiple commits](#feature-branch-multiple-commits)
+ * [Helpers](#helpers)
+   * [Feature branch?](#feature-branch-)
+   * [Fix branch?](#fix-branch-)
+   * [Release branch?](#release-branch-)
+   * [Trivial branch?](#trivial-branch-)
 
 ### Config
 
@@ -70,6 +75,40 @@ samsao.fail_when_non_single_commit_feature
 
 Going to make the PR fails when it's a feature branch (starts with `feature/`)
 and the PR contains more than one commit.
+
+### Helpers
+
+#### Feature Branch?
+
+```
+samsao.feature_branch?
+```
+
+Returns true if the PR branch starts with `feature/`.
+
+#### Fix Branch?
+
+```
+samsao.fix_branch?
+```
+
+Returns true if the PR branch starts with `fix/`.
+
+#### Release Branch?
+
+```
+samsao.release_branch?
+```
+
+Returns true if the PR branch starts with `release/`.
+
+#### Trivial Branch?
+
+```
+samsao.trivial_branch?
+```
+
+Returns true if the PR branch starts with `trivial/`.
 
 ## Development
 

@@ -31,25 +31,13 @@ module Danger
       end
 
       describe 'branching model' do
-        it 'continues on fix/ prefix' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('fix/bug')
-          @plugin.fail_when_wrong_branching_model
+        ['fix', 'feature', 'release', 'trivia'].each do |branch_prefix|
+          it "continues on #{branch_prefix}/ prefix" do
+            allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch_prefix}/something")
+            @plugin.fail_when_wrong_branching_model
 
-          expect(@dangerfile).to have_no_error
-        end
-
-        it 'continues on feature/ prefix' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('feature/12')
-          @plugin.fail_when_wrong_branching_model
-
-          expect(@dangerfile).to have_no_error
-        end
-
-        it 'continues on release/ prefix' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('release/12')
-          @plugin.fail_when_wrong_branching_model
-
-          expect(@dangerfile).to have_no_error
+            expect(@dangerfile).to have_no_error
+          end
         end
 
         it 'fails on wrong prefix' do

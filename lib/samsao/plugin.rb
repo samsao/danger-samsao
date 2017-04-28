@@ -33,7 +33,7 @@ module Danger
     def respects_branching_model(branch)
       parts = branch.split('/')
 
-      ['fix', 'feature', 'release'].include?(parts[0])
+      ['fix', 'feature', 'release', 'trivia'].include?(parts[0])
     end
   end
 end

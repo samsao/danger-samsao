@@ -17,6 +17,7 @@ your `Dangerfile` under the `samsao` namespace.
  * [Config](#config)
  * [Actions](#actions)
    * [Branching Model](#branching-model)
+   * [CHANGELOG update missing](#changelog-update-missing)
    * [Feature branch multiple commits](#feature-branch-multiple-commits)
 
 ### Config
@@ -26,10 +27,17 @@ easier. This is done by using the `config` attributes the plugin:
 
 ```
 samsao.config do
+  changelogs 'CHANGELOG.yml'
   sources 'app/src'
 end
 ```
-**Note**: No actions currently use this but it's coming!
+
+#### Changelogs
+
+Default: `CHANGELOG.md`
+
+Enable to change the CHANGELOG file paths looked upon when checking if
+CHANGELOG file has been modified or not.
 
 ### Actions
 
@@ -44,6 +52,15 @@ samsao.fail_when_wrong_branching_model
 
 Going to make the PR fails when the branch does not respect the git branching
 model.
+
+#### CHANGELOG Update Missing
+
+```
+samsao.fail_when_changelog_update_missing
+```
+
+Going to make the PR fails when it's a feature branch (starts with `feature/`)
+or fix branch (`fix/`) and the CHANGELOG file was not updated.
 
 #### Feature Branch Multiple Commits
 

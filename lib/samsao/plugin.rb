@@ -44,7 +44,7 @@ module Danger
     #
     # @return [void]
     def fail_when_changelog_update_missing
-      return unless feature_branch? || fix_branch?
+      return if trivial_change?
 
       message = 'You did a fix or a feature without updating CHANGELOG file!'
 
@@ -77,6 +77,13 @@ module Danger
     # @return [void]
     def trivial_branch?
       git_branch.start_with?('trivial/')
+    end
+
+    # Return true if the current PR is a trivial change
+    #
+    # @return [void]
+    def trivial_change?
+      trivial_branch? || github.pr_title.include?('#trivial')
     end
 
     # Return true if any source files are in the git modified files list.

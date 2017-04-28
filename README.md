@@ -24,6 +24,7 @@ your `Dangerfile` under the `samsao` namespace.
    * [Fix branch?](#fix-branch-)
    * [Release branch?](#release-branch-)
    * [Trivial branch?](#trivial-branch-)
+   * [Trivial change?](#trivial-change-)
 
 ### Config
 
@@ -109,6 +110,15 @@ samsao.trivial_branch?
 ```
 
 Returns true if the PR branch starts with `trivial/`.
+
+#### Trivial Change?
+
+```
+samsao.trivial_change?
+```
+
+Returns true if the PR title contains `#trivial` or the branch is a trivial
+branch (`trivial_branch?` helper).
 
 ## Development
 

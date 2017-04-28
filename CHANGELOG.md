@@ -1,6 +1,8 @@
 ## In progress
 
- * Added branch helpers actions:
+ * Added `trivial_change?` helper.
+
+ * Added branch helpers:
     * `fix_branch?`
     * `feature_branch?`
     * `release_branch?`

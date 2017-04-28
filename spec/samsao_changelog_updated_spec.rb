@@ -6,6 +6,8 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
+
+        allow(@plugin.github).to receive(:pr_title).and_return('Something')
       end
 
       describe 'changelog updated' do
@@ -55,6 +57,15 @@ module Danger
 
           allow(@plugin.github).to receive(:branch_for_head).and_return('fix/a')
           allow(@plugin.git).to receive(:modified_files).and_return(['web/CHANGELOG.md'])
+
+          @plugin.fail_when_changelog_update_missing
+
+          expect(@dangerfile).to have_no_error
+        end
+
+        it 'continues on trivial_change and CHANGELOG not updated' do
+          allow(@plugin).to receive(:trivial_change?).and_return(true)
+          allow(@plugin.git).to receive(:modified_files).and_return([])
 
           @plugin.fail_when_changelog_update_missing
 

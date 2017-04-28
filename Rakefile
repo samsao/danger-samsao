@@ -1,3 +1,5 @@
+# rubocop:disable Style/HashSyntax
+
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
@@ -9,9 +11,7 @@ task :check => [:lint, :tests]
 task :lint => [:lint_ruby, :lint_danger]
 
 desc 'Run RuboCop on the lib/specs directory'
-RuboCop::RakeTask.new(:lint_ruby) do |task|
-  task.patterns = ['lib/**/*.rb', 'spec/**/*.rb']
-end
+RuboCop::RakeTask.new(:lint_ruby)
 
 desc 'Ensure that the plugin passes `danger plugins lint`'
 task :lint_danger do

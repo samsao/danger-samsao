@@ -11,6 +11,9 @@ Metrics/LineLength:
 Style/SignalException:
   Enabled: false
 
+Style/SymbolArray:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 

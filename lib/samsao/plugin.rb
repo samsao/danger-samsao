@@ -23,17 +23,33 @@ module Danger
     #
     # @return [void]
     def fail_when_wrong_branching_model
-      message = 'Your branch should be prefixed with feature/, fix/ or release/!'
+      message = 'Your branch should be prefixed with feature/, fix/, trivia/ or release/!'
 
-      fail message unless respects_branching_model(github.branch_for_head)
+      fail message unless respects_branching_model
+    end
+
+    # Fails when a feature branch have than one commit
+    #
+    # @return [void]
+    def fail_when_non_single_commit_feature
+      commit_count = git.commits.size
+      message = "Your feature branch should have a single commit but found #{commit_count}, squash them together!"
+
+      fail message if feature_branch? && commit_count > 1
     end
 
     private
 
-    def respects_branching_model(branch)
-      parts = branch.split('/')
+    def git_branch
+      github.branch_for_head
+    end
 
-      ['fix', 'feature', 'release', 'trivia'].include?(parts[0])
+    def respects_branching_model
+      git_branch =~ %r{(feature|fix|release|trivia)/.*}
+    end
+
+    def feature_branch?
+      git_branch.start_with?('feature/')
     end
   end
 end

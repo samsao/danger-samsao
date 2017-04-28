@@ -17,6 +17,7 @@ your `Dangerfile` under the `samsao` namespace.
  * [Config](#config)
  * [Actions](#actions)
    * [Branching Model](#branching-model)
+   * [Feature branch multiple commits](#feature-branch-multiple-commits)
 
 ### Config
 
@@ -43,6 +44,15 @@ samsao.fail_when_wrong_branching_model
 
 Going to make the PR fails when the branch does not respect the git branching
 model.
+
+#### Feature Branch Multiple Commits
+
+```
+samsao.fail_when_non_single_commit_feature
+```
+
+Going to make the PR fails when it's a feature branch (starts with `feature/`)
+and the PR contains more than one commit.
 
 ## Development
 

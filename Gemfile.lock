@@ -54,6 +54,9 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    guard-rubocop (1.2.0)
+      guard (~> 2.0)
+      rubocop (~> 0.20)
     kramdown (1.13.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -124,6 +127,7 @@ DEPENDENCIES
   danger-samsao!
   guard (~> 2.14)
   guard-rspec (~> 4.7)
+  guard-rubocop (~> 1.2)
   pry
   rake (~> 10.0)
   rspec (~> 3.4)

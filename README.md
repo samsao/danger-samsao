@@ -22,6 +22,7 @@ your `Dangerfile` under the `samsao` namespace.
  * [Helpers](#helpers)
    * [Feature branch?](#feature-branch-)
    * [Fix branch?](#fix-branch-)
+   * [Has app changes?](#has-app-changes-)
    * [Release branch?](#release-branch-)
    * [Trivial branch?](#trivial-branch-)
    * [Trivial change?](#trivial-change-)
@@ -44,6 +45,33 @@ Default: `CHANGELOG.md`
 
 Enable to change the CHANGELOG file paths looked upon when checking if
 CHANGELOG file has been modified or not.
+
+#### Sources
+
+Default: `<Empty>`
+
+Enable to change which paths are considered has being source files of the
+project. Multiple entries can be passed. Accepts multiple entries to be passed:
+
+```
+samsao.config do
+  sources 'common/src', 'web/src'
+end
+```
+
+Each source entry can be a `Regexp`
+
+```
+sources /^(common|mobile|web|/src)/
+```
+
+Or a pure `String`. When a pure string, matches start of git modified files list:
+
+```
+  sources 'common/src'
+```
+
+Would match `common/src/a/b.txt` but not `other/common/src/a/b.txt`.
 
 ### Actions
 
@@ -78,6 +106,19 @@ Going to make the PR fails when it's a feature branch (starts with `feature/`)
 and the PR contains more than one commit.
 
 ### Helpers
+
+#### Has App Changes?
+
+```
+samsao.has_app_changes?
+```
+
+When no arguments are given, returns true if any configured [source files](#sources) has
+been modified in this commit.
+
+When one or more arguments is given, uses same rules as for [source files](#sources) (see
+section for details) and returns if any given source entry files has been modified in this
+commit.
 
 #### Feature Branch?
 
@@ -117,8 +158,8 @@ Returns true if the PR branch starts with `trivial/`.
 samsao.trivial_change?
 ```
 
-Returns true if the PR title contains `#trivial` or the branch is a trivial
-branch (`trivial_branch?` helper).
+Returns true if the PR title contains `#trivial` or `#typo` or the branch is a
+trivial branch ([trivial_branch?](#trivial-branch-) helper).
 
 ## Development
 

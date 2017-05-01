@@ -3,6 +3,7 @@ module Danger
   class SamsaoConfig
     def initialize
       @changelogs = ['CHANGELOG.md']
+      @sources = []
     end
 
     def changelogs(*entries)

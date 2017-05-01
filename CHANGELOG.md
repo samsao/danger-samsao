@@ -1,5 +1,9 @@
 ## In progress
 
+ * Updated `trivial_change?` helper to support `#typo` in PR title.
+
+ * Added `has_app_changes?` helper.
+
  * Added `trivial_change?` helper.
 
  * Added branch helpers:

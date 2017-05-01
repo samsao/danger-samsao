@@ -1,6 +1,7 @@
 # rubocop:disable Style/PredicateName
 
 require 'samsao/config'
+require 'samsao/regexp'
 
 module Danger
   # Samsao's Danger plugin.
@@ -79,18 +80,25 @@ module Danger
       git_branch.start_with?('trivial/')
     end
 
-    # Return true if the current PR is a trivial change
+    # Return true if the current PR is a trivial change (branch is `trivial_branch?`)
+    # or PR title contains #trivial or #typo markers.
     #
     # @return [void]
     def trivial_change?
-      trivial_branch? || github.pr_title.include?('#trivial')
+      trivial_branch? || ['#trivial', '#typo'].any? { |modifier| github.pr_title.include?(modifier) }
     end
 
     # Return true if any source files are in the git modified files list.
     #
     # @return [void]
-    def has_app_changes?
-      config.sources
+    def has_app_changes?(*sources)
+      sources = config.sources if sources.nil? || sources.empty?
+
+      sources.any? do |source|
+        pattern = Samsao::Regexp.from_matcher(source, when_string_pattern_prefix_with: '^')
+
+        modified_file?(pattern)
+      end
     end
 
     private
@@ -101,6 +109,10 @@ module Danger
 
     def git_branch
       github.branch_for_head
+    end
+
+    def modified_file?(matcher)
+      !git.modified_files.grep(matcher).empty?
     end
 
     def respects_branching_model

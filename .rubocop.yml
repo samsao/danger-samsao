@@ -8,6 +8,9 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Max: 120
 
+Style/IndentArray:
+  Enabled: false
+
 Style/SignalException:
   Enabled: false
 

@@ -16,16 +16,17 @@ your `Dangerfile` under the `samsao` namespace.
 
  * [Config](#config)
  * [Actions](#actions)
-   * [Branching Model](#branching-model)
-   * [CHANGELOG update missing](#changelog-update-missing)
-   * [Feature branch multiple commits](#feature-branch-multiple-commits)
+   * [samsao.fail_when_wrong_branching_model](#branching-model)
+   * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
+   * [samsao.fail_when_non_single_commit_feature](#feature-branch-multiple-commits)
  * [Helpers](#helpers)
-   * [Feature branch?](#feature-branch-)
-   * [Fix branch?](#fix-branch-)
-   * [Has app changes?](#has-app-changes-)
-   * [Release branch?](#release-branch-)
-   * [Trivial branch?](#trivial-branch-)
-   * [Trivial change?](#trivial-change-)
+   * [samsao.changelog_modified?](#changelog-modified-)
+   * [samsao.feature_branch?](#feature-branch-)
+   * [samsao.fix_branch?](#fix-branch-)
+   * [samsao.has_app_changes?](#has-app-changes-)
+   * [samsao.release_branch?](#release-branch-)
+   * [samsao.trivial_branch?](#trivial-branch-)
+   * [samsao.trivial_change?](#trivial-change-)
 
 ### Config
 
@@ -107,6 +108,18 @@ and the PR contains more than one commit.
 
 ### Helpers
 
+#### Changelog Modified?
+
+```
+samsao.changelog_modified?
+```
+
+When no arguments are given, returns true if any configured [changelogs](#changelogs) has
+been modified in this commit.
+
+When one or more arguments is given, returns true if any given changelog entry file has been
+modified in this commit.
+
 #### Has App Changes?
 
 ```
@@ -117,7 +130,7 @@ When no arguments are given, returns true if any configured [source files](#sour
 been modified in this commit.
 
 When one or more arguments is given, uses same rules as for [source files](#sources) (see
-section for details) and returns if any given source entry files has been modified in this
+section for details) and returns true if any given source entry files has been modified in this
 commit.
 
 #### Feature Branch?

@@ -22,6 +22,16 @@ module Danger
       @config.instance_eval(&block)
     end
 
+    # Check if any changelog were modified. When the helper receives nothing,
+    # changelogs defined by the config are used.
+    #
+    # @return [Boolean] True if any changelogs were modified in this commit
+    def changelog_modified?(*changelogs)
+      changelogs = config.changelogs if changelogs.nil? || changelogs.empty?
+
+      changelogs.any? { |changelog| git.modified_files.include?(changelog) }
+    end
+
     # Fails when git branching model is not respected for PR branch name.
     #
     # @return [void]
@@ -102,10 +112,6 @@ module Danger
     end
 
     private
-
-    def changelog_modified?
-      config.changelogs.any? { |changelog| git.modified_files.include?(changelog) }
-    end
 
     def git_branch
       github.branch_for_head

@@ -1,5 +1,7 @@
 ## In progress
 
+ * Added `changelog_modified?` helper.
+
  * Updated `trivial_change?` helper to support `#typo` in PR title.
 
  * Added `has_app_changes?` helper.
@@ -15,3 +17,5 @@
  * Added `fail_when_changelog_update_missing` action.
 
  * Added `fail_when_non_single_commit_feature` action.
+
+ * Added `fail_when_wrong_branching_model` action.

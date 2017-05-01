@@ -6,6 +6,7 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
+        @changelog_needs_update = 'You did a fix or a feature without updating CHANGELOG file!'
 
         allow(@plugin.github).to receive(:pr_title).and_return('Something')
       end
@@ -78,7 +79,7 @@ module Danger
 
           @plugin.fail_when_changelog_update_missing
 
-          expect(@dangerfile).to have_error('You did a fix or a feature without updating CHANGELOG file!')
+          expect(@dangerfile).to have_error(@changelog_needs_update)
         end
       end
     end

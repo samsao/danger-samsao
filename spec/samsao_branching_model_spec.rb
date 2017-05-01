@@ -6,6 +6,7 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
+        @wrong_branching_model = 'Your branch should be prefixed with feature/, fix/, trivial/ or release/!'
       end
 
       describe 'branching model' do
@@ -24,7 +25,7 @@ module Danger
 
           @plugin.fail_when_wrong_branching_model
 
-          expect(@dangerfile).to have_error('Your branch should be prefixed with feature/, fix/, trivial/ or release/!')
+          expect(@dangerfile).to have_error(@wrong_branching_model)
         end
 
         it 'fails on good prefix but wrong format' do
@@ -32,7 +33,7 @@ module Danger
 
           @plugin.fail_when_wrong_branching_model
 
-          expect(@dangerfile).to have_error('Your branch should be prefixed with feature/, fix/, trivial/ or release/!')
+          expect(@dangerfile).to have_error(@wrong_branching_model)
         end
       end
     end

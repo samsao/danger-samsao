@@ -6,6 +6,7 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
+        @must_have_single_commit = 'Your feature branch should have a single commit but found 2, squash them together!'
       end
 
       describe 'feature branch commits' do
@@ -33,8 +34,7 @@ module Danger
 
           @plugin.fail_when_non_single_commit_feature
 
-          expected_message = 'Your feature branch should have a single commit but found 2, squash them together!'
-          expect(@dangerfile).to have_error(expected_message)
+          expect(@dangerfile).to have_error(@must_have_single_commit)
         end
       end
     end

@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'bin/**/*'
+  TargetRubyVersion: '2.1'
 
 Metrics/BlockLength:
   Max: 9999

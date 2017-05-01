@@ -31,6 +31,16 @@ module Samsao
       fail message unless changelog_modified?
     end
 
+    # Fails when one or more merge commit is detected.
+    #
+    # @return [void]
+    def fail_when_merge_commit_detected
+      message = 'Some merge commits were detected, you must use rebase to sync with base branch.'
+      merge_commit_detector = /^Merge branch '#{github.branch_for_base}'/
+
+      fail message if git.commits.any? { |commit| commit.message =~ merge_commit_detector }
+    end
+
     # Fails when CHANGELOG is not updated on feature or fix branches
     #
     # @return [void]

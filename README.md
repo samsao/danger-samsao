@@ -16,9 +16,10 @@ your `Dangerfile` under the `samsao` namespace.
 
  * [Config](#config)
  * [Actions](#actions)
-   * [samsao.fail_when_wrong_branching_model](#branching-model)
    * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
+   * [samsao.fail_when_merge_commit_detected](#merge-commits-detected)
    * [samsao.fail_when_non_single_commit_feature](#feature-branch-multiple-commits)
+   * [samsao.fail_when_wrong_branching_model](#branching-model)
    * [samsao.warn_when_work_in_progess_pr](#when-work-in-progess-pr)
  * [Helpers](#helpers)
    * [samsao.changelog_modified?](#changelog-modified-)
@@ -106,6 +107,20 @@ samsao.fail_when_non_single_commit_feature
 
 Going to make the PR fails when it's a feature branch (starts with `feature/`)
 and the PR contains more than one commit.
+
+#### Merge Commit(s) Detected
+
+```
+samsao.fail_when_merge_commit_detected
+```
+
+Going to make the PR fails when one or multipl merge commits are detcted.
+A merge commit is one created when merging two branches and matching the
+regexp `^Merge branch '<base branch>'` where `<base branch>` is the branch
+the PR is being merged into (usually `develop`).
+
+Use a Git `rebase` to get rid of those commits and correctly sync up with
+`develop` branch.
 
 #### Work in Progress PR
 

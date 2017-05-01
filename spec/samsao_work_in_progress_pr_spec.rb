@@ -6,6 +6,7 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
+        @work_in_progress = 'Do not merge, PR is a work in progess [WIP]!'
 
         allow(@plugin.github).to receive(:branch_for_head).and_return('something')
         allow(@plugin.github).to receive(:pr_title).and_return('Something')
@@ -17,7 +18,7 @@ module Danger
 
           @plugin.warn_when_work_in_progess_pr
 
-          expect(@dangerfile).to have_warning('Do not merge, PR is a work in progess [WIP]!')
+          expect(@dangerfile).to have_warning(@work_in_progress)
         end
 
         it 'warns when PR title contains [WIP] at the start' do
@@ -25,7 +26,7 @@ module Danger
 
           @plugin.warn_when_work_in_progess_pr
 
-          expect(@dangerfile).to have_warning('Do not merge, PR is a work in progess [WIP]!')
+          expect(@dangerfile).to have_warning(@work_in_progress)
         end
 
         it 'warns when PR title contains [WIP] in the middle' do
@@ -33,7 +34,7 @@ module Danger
 
           @plugin.warn_when_work_in_progess_pr
 
-          expect(@dangerfile).to have_warning('Do not merge, PR is a work in progess [WIP]!')
+          expect(@dangerfile).to have_warning(@work_in_progress)
         end
 
         it 'continues when PR title does not contain [WIP] marker' do

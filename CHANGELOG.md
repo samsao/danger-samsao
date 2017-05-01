@@ -1,5 +1,7 @@
 ## In progress
 
+ * Added `fail_when_merge_commit_detected` action.
+
  * Added `warn_when_work_in_progess_pr` action.
 
  * Added `changelog_modified?` helper.

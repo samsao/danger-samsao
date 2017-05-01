@@ -19,6 +19,7 @@ your `Dangerfile` under the `samsao` namespace.
    * [samsao.fail_when_wrong_branching_model](#branching-model)
    * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
    * [samsao.fail_when_non_single_commit_feature](#feature-branch-multiple-commits)
+   * [samsao.warn_when_work_in_progess_pr](#when-work-in-progess-pr)
  * [Helpers](#helpers)
    * [samsao.changelog_modified?](#changelog-modified-)
    * [samsao.feature_branch?](#feature-branch-)
@@ -105,6 +106,14 @@ samsao.fail_when_non_single_commit_feature
 
 Going to make the PR fails when it's a feature branch (starts with `feature/`)
 and the PR contains more than one commit.
+
+#### Work in Progress PR
+
+```
+samsao.warn_when_work_in_progess_pr
+```
+
+Going to mark PR as in warning state when PR title contains the `[WIP]` marker
 
 ### Helpers
 

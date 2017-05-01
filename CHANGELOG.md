@@ -1,5 +1,7 @@
 ## In progress
 
+ * Added `warn_when_work_in_progess_pr` action.
+
  * Added `changelog_modified?` helper.
 
  * Updated `trivial_change?` helper to support `#typo` in PR title.

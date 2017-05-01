@@ -1,4 +1,4 @@
-## In progress
+## 0.1.0 (May 1, 2017)
 
  * Added `fail_when_merge_commit_detected` action.
 

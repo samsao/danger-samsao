@@ -232,11 +232,12 @@ Assume for the rest of this section that we are releasing version `0.1.0`
 and today's date is `May 1st, 2017`. Terminal commands are given, but feel
 free to use `SourceTree` or anything else.
 
-Start by checking out the commit that was flagged as the release commit (could be
-the `develop` branch) and name the branch `release/0.1.0`:
+Start by checking out the `develop` branch and ensure you are up-to-date
+with remote
 
 ```
-git checkout -b release/0.1.0 aeb156fb4a
+git checkout develop
+git pull
 ```
 
 Once on the branch, modify `CHANGELOG.md` so that `In progress` is replaced by
@@ -256,7 +257,7 @@ Once the commit is done, simply run `bundle exec rake release`. This will
 ask you for the Samsao's RubyGems credentials (only if it's your first
 release, ask a system administrator to get them). It will create a tag
 on the current commit of the current branch (should be the release commit
-made earlier) named `v0.1.0`. And it will finally push the tag to the
+made earlier) named `v0.1.0`. And it will finally push the branch & tag to the
 repository as well as building and publishing the gem on RubyGems.
 
 Last thing to do is bumping to next development version. Edit back

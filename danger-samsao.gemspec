@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Danger plugin for Samsao PR guidelines.'
   spec.summary = 'A longer description of danger-samsao.'
   spec.homepage = 'https://github.com/samsao/danger-samsao'
-  spec.license = 'Private'
+  spec.license = 'MIT'
 
   spec.files = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard', '~> 2.14'
   spec.add_development_dependency 'guard-rubocop', '~> 1.2'
   spec.add_development_dependency 'guard-rspec', '~> 4.7'
-  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'pry', '~> 0.11.0.pre2'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rubocop', '~> 0.41'
   spec.add_development_dependency 'rspec', '~> 3.4'

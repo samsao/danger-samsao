@@ -223,3 +223,68 @@ Once you have the token, make it available as an environment variable named
 `DANGER_GITHUB_API_TOKEN`. Preferred way is to use a `.env` file at the root
 of this project. Simply do `cp .env.example .env` and edit the copied `.env`
 and enter the token to the side of `DANGER_GITHUB_API_TOKEN` line.
+
+### Publish
+
+The release process is quite simple. It consists of doing a release commit,
+run a rake task and finally doing a bump to next version commit and push it.
+Assume for the rest of this section that we are releasing version `0.1.0`
+and today's date is `May 1st, 2017`. Terminal commands are given, but feel
+free to use `SourceTree` or anything else.
+
+Start by checking out the commit that was flagged as the release commit (could be
+the `develop` branch) and name the branch `release/0.1.0`:
+
+```
+git checkout -b release/0.1.0 aeb156fb4a
+```
+
+Once on the branch, modify `CHANGELOG.md` so that `In progress` is replaced by
+the current version and released date `## 0.1.0 (May 1, 2017)`. Then modify
+`lib/samsao/gem_version.rb` to ensure the version is set to current value
+`VERSION = '0.1.0'.freeze`. Lastly, run `bundle install` just to ensure
+`Gemfile.lock` has correct new version also.
+
+With all these changes, make a release commit and use the following normalized
+text as the commit message:
+
+```
+Released version 0.1.0
+```
+
+Once the commit is done, simply run `bundle exec rake release`. This will
+ask you for the Samsao's RubyGems credentials (only if it's your first
+release, ask a system administrator to get them). It will create a tag
+on the current commit of the current branch (should be the release commit
+made earlier) named `v0.1.0`. And it will finally push the tag to the
+repository as well as building and publishing the gem on RubyGems.
+
+Last thing to do is bumping to next development version. Edit back
+`CHANGELOG.md` so that `## In progress` is the new section header and
+add a bunch of empty lines (around 10, only 2 shown in the example for
+brevity) starting with a **space** followed by a **star**:
+
+```
+## In progress
+
+ *
+
+ *
+
+## 0.1.0 (May 1, 2017)
+```
+
+Also edit `lib/samsao/gem_version.rb` so that next development version
+value is used `VERSION = '0.1.1.pre1'.freeze`. The `.pre1` is the lowest
+possible version before the official `0.1.1` one (or higher).
+
+Commit all this changes together in a new commit that has the following
+message:
+
+```
+Bumped to next development version
+```
+
+Finally, create a PR with this branch and open a pull request and merge
+right away (your team mates should known in advance that a release is
+happening and branch merged faster than other ones).

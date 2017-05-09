@@ -2,7 +2,7 @@
 
 ## Config
 samsao.config do
-  changelogs 'CHANGELOG.md'
+  project_type :library
   sources '.*'
 end
 

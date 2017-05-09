@@ -12,21 +12,21 @@ module Danger
       end
 
       describe 'trivial_change?' do
-        ['#trivial', '#typo'].each do |marker|
+        ['#trivial', '#typo', '#typos', '#tool', '#tools', '#tooling'].each do |marker|
           it "returns true when PR title contains #{marker} at the end" do
-            allow(@plugin.github).to receive(:pr_title).and_return("Trivial at the end #{marker}")
+            allow(@plugin.github).to receive(:pr_title).and_return("Marker at the end #{marker}")
 
             expect(@plugin.trivial_change?).to be(true)
           end
 
           it "returns true when PR title contains #{marker} at the start" do
-            allow(@plugin.github).to receive(:pr_title).and_return("#{marker} Trivial at the start")
+            allow(@plugin.github).to receive(:pr_title).and_return("#{marker} Marker at the start")
 
             expect(@plugin.trivial_change?).to be(true)
           end
 
           it "returns true when PR title contains #{marker} in the middle" do
-            allow(@plugin.github).to receive(:pr_title).and_return("Trivial in #{marker} the middle")
+            allow(@plugin.github).to receive(:pr_title).and_return("Marker in #{marker} the middle")
 
             expect(@plugin.trivial_change?).to be(true)
           end

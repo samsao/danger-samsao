@@ -22,13 +22,13 @@ your `Dangerfile` under the `samsao` namespace.
    * [samsao.fail_when_wrong_branching_model](#branching-model)
    * [samsao.warn_when_work_in_progess_pr](#when-work-in-progess-pr)
  * [Helpers](#helpers)
-   * [samsao.changelog_modified?](#changelog-modified-)
-   * [samsao.feature_branch?](#feature-branch-)
-   * [samsao.fix_branch?](#fix-branch-)
-   * [samsao.has_app_changes?](#has-app-changes-)
-   * [samsao.release_branch?](#release-branch-)
-   * [samsao.trivial_branch?](#trivial-branch-)
-   * [samsao.trivial_change?](#trivial-change-)
+   * [samsao.changelog_modified?](#changelog-modified)
+   * [samsao.feature_branch?](#feature-branch)
+   * [samsao.fix_branch?](#fix-branch)
+   * [samsao.has_app_changes?](#has-app-changes)
+   * [samsao.release_branch?](#release-branch)
+   * [samsao.trivial_branch?](#trivial-branch)
+   * [samsao.trivial_change?](#trivial-change)
 
 ### Config
 
@@ -195,8 +195,8 @@ Returns true if the PR branch starts with `trivial/`.
 samsao.trivial_change?
 ```
 
-Returns true if the PR title contains `#trivial` or `#typo` or the branch is a
-trivial branch ([trivial_branch?](#trivial-branch-) helper).
+Returns true if the PR title contains `#trivial`, `#typo`, `#tool` (as well as
+some variations `#typos`, `#tools` and `#tooling`) or the branch is a trivial branch ([trivial_branch?](#trivial-branch-) helper).
 
 ## Development
 

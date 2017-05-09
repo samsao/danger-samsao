@@ -46,7 +46,7 @@ module Samsao
     #
     # @return [void]
     def trivial_change?
-      trivial_branch? || ['#trivial', '#typo'].any? { |modifier| github.pr_title.include?(modifier) }
+      trivial_branch? || !(/#(trivial|typo(s)?|tool(s|ing)?)/ =~ github.pr_title).nil?
     end
 
     # Return true if any source files are in the git modified files list.

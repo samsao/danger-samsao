@@ -1,4 +1,4 @@
-## In progress
+## 0.2.0 (May 9, 2017)
 
 #### Breaking Changes
 

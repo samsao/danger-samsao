@@ -26,6 +26,9 @@ module Danger
           data_set = [
             { branch: 'feature/a', expected: false },
             { branch: 'fix/a', expected: true },
+            { branch: 'bugfix/a', expected: true },
+            { branch: 'hotfix/a', expected: true },
+            { branch: 'otherfix/a', expected: false },
             { branch: 'random', expected: false },
           ]
 
@@ -48,16 +51,16 @@ module Danger
           end
         end
 
-        it 'supports trivial_branch? correctly' do
+        it 'supports support_branch? correctly' do
           data_set = [
-            { branch: 'trivial/a', expected: true },
+            { branch: 'support/a', expected: true },
             { branch: 'fix/a', expected: false },
             { branch: 'random', expected: false },
           ]
 
           data_set.each do |data|
             allow(@plugin.github).to receive(:branch_for_head).and_return(data[:branch])
-            expect(@plugin.trivial_branch?).to be(data[:expected])
+            expect(@plugin.support_branch?).to be(data[:expected])
           end
         end
       end

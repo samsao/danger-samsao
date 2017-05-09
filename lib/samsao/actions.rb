@@ -5,7 +5,7 @@ module Samsao
     #
     # @return [void]
     def fail_when_wrong_branching_model
-      message = 'Your branch should be prefixed with feature/, fix/, trivial/ or release/!'
+      message = 'Your branch should be prefixed with feature/, fix/, bugfix/, hotfix/, release/ or support/!'
 
       fail message unless respects_branching_model
     end
@@ -24,11 +24,9 @@ module Samsao
     #
     # @return [void]
     def fail_when_changelog_update_missing
-      return if trivial_change?
+      return if trivial_change? || support_branch?
 
-      message = 'You did a fix or a feature without updating CHANGELOG file!'
-
-      fail message unless changelog_modified?
+      fail 'You did a fix or a feature without updating CHANGELOG file!' unless changelog_modified?
     end
 
     # Fails when one or more merge commit is detected.

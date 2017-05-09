@@ -20,11 +20,11 @@ module Samsao
       git_branch.start_with?('feature/')
     end
 
-    # Return true if the current PR branch is a feature branch
+    # Return true if the current PR branch is a bug fix branch
     #
     # @return [void]
     def fix_branch?
-      git_branch.start_with?('fix/')
+      !(%r{^(bug|hot)?fix/} =~ git_branch).nil?
     end
 
     # Return true if the current PR branch is a release branch
@@ -34,19 +34,19 @@ module Samsao
       git_branch.start_with?('release/')
     end
 
-    # Return true if the current PR branch is a trivial branch
+    # Return true if the current PR branch is a support branch
     #
     # @return [void]
-    def trivial_branch?
-      git_branch.start_with?('trivial/')
+    def support_branch?
+      git_branch.start_with?('support/')
     end
 
-    # Return true if the current PR is a trivial change (branch is `trivial_branch?`)
-    # or PR title contains #trivial or #typo markers.
+    # Return true if the current PR is a trivial change, i.e. if
+    # PR title contains #trivial or #typo markers.
     #
     # @return [void]
     def trivial_change?
-      trivial_branch? || !(/#(trivial|typo(s)?|tool(s|ing)?)/ =~ github.pr_title).nil?
+      !(/#(trivial|typo(s)?)/ =~ github.pr_title).nil?
     end
 
     # Return true if any source files are in the git modified files list.
@@ -73,7 +73,7 @@ module Samsao
     end
 
     def respects_branching_model
-      feature_branch? || fix_branch? || release_branch? || trivial_branch?
+      feature_branch? || fix_branch? || release_branch? || support_branch?
     end
   end
 end

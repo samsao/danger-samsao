@@ -12,7 +12,7 @@ module Danger
       end
 
       describe 'trivial_change?' do
-        ['#trivial', '#typo', '#typos', '#tool', '#tools', '#tooling'].each do |marker|
+        ['#trivial', '#typo', '#typos'].each do |marker|
           it "returns true when PR title contains #{marker} at the end" do
             allow(@plugin.github).to receive(:pr_title).and_return("Marker at the end #{marker}")
 
@@ -30,26 +30,12 @@ module Danger
 
             expect(@plugin.trivial_change?).to be(true)
           end
-
-          it "returns true when branch is a trivial branch and PR include #{marker}" do
-            allow(@plugin.github).to receive(:branch_for_head).and_return('trivial/a')
-            allow(@plugin.github).to receive(:pr_title).and_return("##{marker}")
-
-            expect(@plugin.trivial_change?).to be(true)
-          end
         end
 
-        it 'returns false when not trivial branch and no trivial marker(s) in PR title' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('feature/a')
+        it 'returns false no trivial marker(s) in PR title' do
           allow(@plugin.github).to receive(:pr_title).and_return('Something')
 
           expect(@plugin.trivial_change?).to be(false)
-        end
-
-        it 'returns true when branch is a trivial branch' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('trivial/a')
-
-          expect(@plugin.trivial_change?).to be(true)
         end
       end
     end

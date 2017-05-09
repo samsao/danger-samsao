@@ -6,11 +6,12 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
-        @wrong_branching_model = 'Your branch should be prefixed with feature/, fix/, trivial/ or release/!'
+        @wrong_branching_model = 'Your branch should be prefixed with feature/, fix/, ' \
+                                 'bugfix/, hotfix/, release/ or support/!'
       end
 
       describe 'branching model' do
-        ['fix', 'feature', 'release', 'trivial'].each do |branch_prefix|
+        ['fix', 'bugfix', 'hotfix', 'feature', 'release', 'support'].each do |branch_prefix|
           it "continues on #{branch_prefix}/ prefix" do
             allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch_prefix}/something")
 

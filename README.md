@@ -54,7 +54,7 @@ your `Dangerfile` under the `samsao` namespace.
    * [samsao.fix_branch?](#fix-branch)
    * [samsao.has_app_changes?](#has-app-changes)
    * [samsao.release_branch?](#release-branch)
-   * [samsao.trivial_branch?](#trivial-branch)
+   * [samsao.support_branch?](#support-branch)
    * [samsao.trivial_change?](#trivial-change)
 
 ### Config
@@ -115,7 +115,15 @@ samsao.fail_when_wrong_branching_model
 ```
 
 Going to make the PR fails when the branch does not respect the git branching
-model.
+model. We follow git flow branching model and failure will occurs if the branch
+name does not start with one of the following prefixes:
+
+ * `fix/`
+ * `bugfix/`
+ * `hotfix/`
+ * `feature/`
+ * `release/`
+ * `support/`
 
 #### CHANGELOG Update Missing
 
@@ -198,7 +206,7 @@ Returns true if the PR branch starts with `feature/`.
 samsao.fix_branch?
 ```
 
-Returns true if the PR branch starts with `fix/`.
+Returns true if the PR branch starts with `fix/`, `bugfix/` or `hotfix/`.
 
 #### Release Branch?
 
@@ -208,13 +216,13 @@ samsao.release_branch?
 
 Returns true if the PR branch starts with `release/`.
 
-#### Trivial Branch?
+#### Support Branch?
 
 ```
-samsao.trivial_branch?
+samsao.support_branch?
 ```
 
-Returns true if the PR branch starts with `trivial/`.
+Returns true if the PR branch starts with `support/`.
 
 #### Trivial Change?
 
@@ -222,8 +230,7 @@ Returns true if the PR branch starts with `trivial/`.
 samsao.trivial_change?
 ```
 
-Returns true if the PR title contains `#trivial`, `#typo`, `#tool` (as well as
-some variations `#typos`, `#tools` and `#tooling`) or the branch is a trivial branch ([trivial_branch?](#trivial-branch-) helper).
+Returns true if the PR title contains `#trivial`, `#typo` or `#typos`.
 
 ## Development
 
@@ -290,10 +297,14 @@ repository as well as building and publishing the gem on RubyGems.
 Last thing to do is bumping to next development version. Edit back
 `CHANGELOG.md` so that `## In progress` is the new section header and
 add a bunch of empty lines (around 10, only 2 shown in the example for
-brevity) starting with a **space** followed by a **star**:
+brevity) into single `Features` section (add other sections when updating
+the CHANGELOG). Each line should be starting with a **space** followed by
+a **star**:
 
 ```
 ## In progress
+
+#### Features
 
  *
 

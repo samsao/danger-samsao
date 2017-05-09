@@ -8,9 +8,10 @@
 
  *
 
- *
+ * Updated `trivial_change?` helper to support variations in marker for
+   example `#typos`, `#tools` and `#tooling`.
 
- *
+ * Updated `trivial_change?` helper to support `#tool` in PR title.
 
 ## 0.1.1 (May 4, 2017)
 

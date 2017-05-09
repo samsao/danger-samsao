@@ -1,11 +1,26 @@
 ## In progress
 
+#### Breaking Changes
+
+ * Changed `trivial_change?` logic by only flagging PR as trivial using
+   the PR title and not the branch name anymore.
+
+ * Removed `trivial_branch?` support. It was replaced by `support_branch?`
+   instead to more closely follow git flow branching model.
+
 #### Features
 
-* Updated `trivial_change?` helper to support variations in marker for
-  example `#typos`, `#tools` and `#tooling`.
+ * Enhanced `fix_branch?` to support `hotfix/` and `bugfix/` prefixes.
 
-* Updated `trivial_change?` helper to support `#tool` in PR title.
+ * Added `support_branch?` support.
+
+ * Updated `trivial_change?` helper to support variations in marker
+   for `#typo` marker, now supports `#typos`.
+
+#### Fixes
+
+ * Fixed branching model to fully support git flow branching model which
+   is the branching model we use.
 
 #### Support
 

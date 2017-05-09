@@ -12,30 +12,32 @@ module Danger
       end
 
       describe 'changelog updated' do
-        it 'continues on non-feature & non-fix branch' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('trivial/a')
+        it 'continues on support branch' do
+          allow(@plugin.github).to receive(:branch_for_head).and_return('support/a')
 
           @plugin.fail_when_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
         end
 
-        it 'continues on feature branch and CHANGELOG updated' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('feature/a')
-          allow(@plugin.git).to receive(:modified_files).and_return(['CHANGELOG.md'])
+        ['fix', 'bugfix', 'hotfix', 'feature', 'release'].each do |branch|
+          it "continues on #{branch} branch and CHANGELOG updated" do
+            allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch}/a")
+            allow(@plugin.git).to receive(:modified_files).and_return(['CHANGELOG.md'])
 
-          @plugin.fail_when_changelog_update_missing
+            @plugin.fail_when_changelog_update_missing
 
-          expect(@dangerfile).to have_no_error
-        end
+            expect(@dangerfile).to have_no_error
+          end
 
-        it 'continues on fix branch and CHANGELOG updated' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('fix/a')
-          allow(@plugin.git).to receive(:modified_files).and_return(['CHANGELOG.md'])
+          it "fails on #{branch} branch and CHANGELOG not updated" do
+            allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch}/a")
+            allow(@plugin.git).to receive(:modified_files).and_return([])
 
-          @plugin.fail_when_changelog_update_missing
+            @plugin.fail_when_changelog_update_missing
 
-          expect(@dangerfile).to have_no_error
+            expect(@dangerfile).to have_error(@changelog_needs_update)
+          end
         end
 
         it 'accepts customized changelogs path' do
@@ -71,15 +73,6 @@ module Danger
           @plugin.fail_when_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
-        end
-
-        it 'fails on feature branch and CHANGELOG not updated' do
-          allow(@plugin.github).to receive(:branch_for_head).and_return('feature/a')
-          allow(@plugin.git).to receive(:modified_files).and_return([])
-
-          @plugin.fail_when_changelog_update_missing
-
-          expect(@dangerfile).to have_error(@changelog_needs_update)
         end
       end
     end

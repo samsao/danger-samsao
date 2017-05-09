@@ -10,6 +10,13 @@
 
 #### Features
 
+ * Enhanced the changelog missing action to not fail when changelog is
+   not updated, project is of type `:application` and PR is on a support
+   branch.
+
+ * Added config option `project_type` which can be one of `:application`
+   or `:library` and defaults to `:application`.
+
  * Enhanced `fix_branch?` to support `hotfix/` and `bugfix/` prefixes.
 
  * Added `support_branch?` support.

@@ -24,9 +24,10 @@ module Samsao
     #
     # @return [void]
     def fail_when_changelog_update_missing
-      return if trivial_change? || support_branch?
+      return if trivial_change?
+      return if support_branch? && config.project_type == :application
 
-      fail 'You did a fix or a feature without updating CHANGELOG file!' unless changelog_modified?
+      fail 'You did a change without updating CHANGELOG file!' unless changelog_modified?
     end
 
     # Fails when one or more merge commit is detected.

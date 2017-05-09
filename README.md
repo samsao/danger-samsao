@@ -14,7 +14,6 @@ Here a sample `Dangerfile` that you can use to bootstrap your project:
 ```
 ## Config
 samsao.config do
-  changelogs 'CHANGELOG.md'
   sources '.*'
 end
 
@@ -28,8 +27,8 @@ samsao.fail_when_wrong_branching_model
 samsao.warn_when_work_in_progess_pr
 
 ## Messages
-if (!status_report[:errors].empty?)
-  message 'If this was a trivial change, typo fix or tooling related, ' +
+unless status_report[:errors].empty?
+  message 'If this was a trivial change, typo fix or tooling related, ' \
           'you can add #trivial, #typo or #tool respectively in your PR title.'
 end
 ```
@@ -65,20 +64,32 @@ easier. This is done by using the `config` attributes the plugin:
 ```
 samsao.config do
   changelogs 'CHANGELOG.yml'
+  project_type :library
   sources 'app/src'
 end
 ```
 
 #### Changelogs
 
-Default: `CHANGELOG.md`
+Defaults: `[CHANGELOG.md]`
 
 Enable to change the CHANGELOG file paths looked upon when checking if
 CHANGELOG file has been modified or not.
 
+#### Project Type
+
+Defaults: `:application`
+
+Change the kind of project your are currently developing. This settings
+affects these actions and helpers:
+
+ * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
+
+See the exact actions or helpers for precise details about implications.
+
 #### Sources
 
-Default: `<Empty>`
+Default: `[]`
 
 Enable to change which paths are considered has being source files of the
 project. Multiple entries can be passed. Accepts multiple entries to be passed:
@@ -131,8 +142,13 @@ name does not start with one of the following prefixes:
 samsao.fail_when_changelog_update_missing
 ```
 
-Going to make the PR fails when it's a feature branch (starts with `feature/`)
-or fix branch (`fix/`) and the CHANGELOG file was not updated.
+This action reports a failure when a PR is made that is not flagged
+as a [trivial change](#trivial-change) and the changelog (based on
+`changelogs` config options) has not been modified.
+
+When the project is of type `:application`, a change made to a [support
+branch](#support-branch) will not trigger a failure even if the changelog
+is not updated.
 
 #### Feature Branch Multiple Commits
 

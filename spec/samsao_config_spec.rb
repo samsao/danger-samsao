@@ -8,7 +8,11 @@ module Danger
         @plugin = @dangerfile.samsao
       end
 
-      describe 'samsao_config' do
+      describe 'config sources' do
+        it 'defaults to empty array when not set' do
+          expect(@plugin.config.sources).to eq([])
+        end
+
         it 'can configure single source' do
           @plugin.config do
             sources 'app/src'
@@ -23,6 +27,56 @@ module Danger
           end
 
           expect(@plugin.config.sources).to eq(['app/src', 'lib/src'])
+        end
+      end
+
+      describe 'config changelogs' do
+        it 'defaults to [CHANGELOG.md] array when not set' do
+          expect(@plugin.config.changelogs).to eq(['CHANGELOG.md'])
+        end
+
+        it 'can configure single changelog' do
+          @plugin.config do
+            changelogs 'a'
+          end
+
+          expect(@plugin.config.changelogs).to eq(['a'])
+        end
+
+        it 'can configure multiple changelogs' do
+          @plugin.config do
+            changelogs 'a', 'b'
+          end
+
+          expect(@plugin.config.changelogs).to eq(['a', 'b'])
+        end
+      end
+
+      describe 'config project_type' do
+        it 'defaults to :application when not set' do
+          expect(@plugin.config.project_type).to eq(:application)
+        end
+
+        [:application, :library].each do |type|
+          it "accepts :#{type} type" do
+            @plugin.config do
+              project_type type
+            end
+
+            expect(@plugin.config.project_type).to eq(type)
+          end
+        end
+
+        it 'rejects invalid types when wrong type is a symbol' do
+          message = "Project type ':custom' is invalid, must be one of ':application, :library'"
+
+          expect { @plugin.config { project_type :custom } }.to raise_error(message)
+        end
+
+        it 'rejects invalid types when wrong type is a string' do
+          message = "Project type 'custom' is invalid, must be one of ':application, :library'"
+
+          expect { @plugin.config { project_type 'custom' } }.to raise_error(message)
         end
       end
     end

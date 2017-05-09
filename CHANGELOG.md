@@ -1,23 +1,27 @@
 ## In progress
 
- *
+#### Features
 
- *
+* Updated `trivial_change?` helper to support variations in marker for
+  example `#typos`, `#tools` and `#tooling`.
 
- *
+* Updated `trivial_change?` helper to support `#tool` in PR title.
 
- *
+#### Support
 
- * Updated `trivial_change?` helper to support variations in marker for
-   example `#typos`, `#tools` and `#tooling`.
+ * Added `Danger` to project, eating our own dog food.
 
- * Updated `trivial_change?` helper to support `#tool` in PR title.
+ * Reformatted `CHANGELOG.md` a bit to split by sections.
 
 ## 0.1.1 (May 4, 2017)
+
+#### Features
 
  * Open source to MIT.
 
 ## 0.1.0 (May 1, 2017)
+
+#### Features
 
  * Added `fail_when_merge_commit_detected` action.
 

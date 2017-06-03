@@ -13,8 +13,12 @@
  *
 
  *
- 
+
  *
+
+#### Support
+
+ * Open source repository and now using Travis as the build system.
 
 ## 0.2.0 (May 9, 2017)
 

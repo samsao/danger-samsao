@@ -1,6 +1,6 @@
 # Danger Samsao
 
-https://travis-ci.org/samsao/danger-samsao.svg?branch=develop
+[![Build Status](https://travis-ci.org/samsao/danger-samsao.svg?branch=develop)](https://travis-ci.org/samsao/danger-samsao)
 
 A Danger plugin bringing Samsao's PR guideline into code.
 

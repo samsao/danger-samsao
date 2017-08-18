@@ -14,7 +14,7 @@ module Danger
           allow(@plugin.github).to receive(:branch_for_head).and_return('feature/a')
           allow(@plugin.git).to receive(:commits).and_return(['sha1'])
 
-          @plugin.fail_when_non_single_commit_feature
+          @plugin.check_non_single_commit_feature
 
           expect(@dangerfile).to have_no_error
         end
@@ -23,7 +23,7 @@ module Danger
           allow(@plugin.github).to receive(:branch_for_head).and_return('fix/a')
           allow(@plugin.git).to receive(:commits).and_return(['sha1', 'sha2'])
 
-          @plugin.fail_when_non_single_commit_feature
+          @plugin.check_non_single_commit_feature
 
           expect(@dangerfile).to have_no_error
         end
@@ -32,7 +32,7 @@ module Danger
           allow(@plugin.github).to receive(:branch_for_head).and_return('feature/a')
           allow(@plugin.git).to receive(:commits).and_return(['sha1', 'sha2'])
 
-          @plugin.fail_when_non_single_commit_feature
+          @plugin.check_non_single_commit_feature
 
           expect(@dangerfile).to have_error(@must_have_single_commit)
         end

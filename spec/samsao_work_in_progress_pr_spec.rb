@@ -16,7 +16,7 @@ module Danger
         it 'warns when PR title contains [WIP] at the end' do
           allow(@plugin.github).to receive(:pr_title).and_return('Marker at the end [WIP]')
 
-          @plugin.warn_when_work_in_progess_pr
+          @plugin.check_work_in_progess_pr
 
           expect(@dangerfile).to have_warning(@work_in_progress)
         end
@@ -24,7 +24,7 @@ module Danger
         it 'warns when PR title contains [WIP] at the start' do
           allow(@plugin.github).to receive(:pr_title).and_return('[WIP] Marker at start')
 
-          @plugin.warn_when_work_in_progess_pr
+          @plugin.check_work_in_progess_pr
 
           expect(@dangerfile).to have_warning(@work_in_progress)
         end
@@ -32,7 +32,7 @@ module Danger
         it 'warns when PR title contains [WIP] in the middle' do
           allow(@plugin.github).to receive(:pr_title).and_return('Marker in [WIP] the middle')
 
-          @plugin.warn_when_work_in_progess_pr
+          @plugin.check_work_in_progess_pr
 
           expect(@dangerfile).to have_warning(@work_in_progress)
         end
@@ -40,7 +40,7 @@ module Danger
         it 'continues when PR title does not contain [WIP] marker' do
           allow(@plugin.github).to receive(:pr_title).and_return('A WIP PR')
 
-          @plugin.warn_when_work_in_progess_pr
+          @plugin.check_work_in_progess_pr
 
           expect(@dangerfile).to have_no_warning
         end

@@ -18,13 +18,13 @@ samsao.config do
 end
 
 ## Errors
-samsao.fail_when_changelog_update_missing
-samsao.fail_when_merge_commit_detected
-samsao.fail_when_non_single_commit_feature
-samsao.fail_when_wrong_branching_model
+samsao.check_changelog_update_missing
+samsao.check_merge_commit_detected
+samsao.check_non_single_commit_feature
+samsao.check_wrong_branching_model
 
 ## Warnings
-samsao.warn_when_work_in_progess_pr
+samsao.check_work_in_progess_pr
 
 ## Messages
 unless status_report[:errors].empty?
@@ -42,11 +42,12 @@ your `Dangerfile` under the `samsao` namespace.
 
  * [Config](#config)
  * [Actions](#actions)
-   * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
-   * [samsao.fail_when_merge_commit_detected](#merge-commits-detected)
-   * [samsao.fail_when_non_single_commit_feature](#feature-branch-multiple-commits)
-   * [samsao.fail_when_wrong_branching_model](#branching-model)
-   * [samsao.warn_when_work_in_progess_pr](#when-work-in-progess-pr)
+   * [Report Levels](#report-levels)
+   * [samsao.check_changelog_update_missing](#changelog-update-missing)
+   * [samsao.check_merge_commit_detected](#merge-commits-detected)
+   * [samsao.check_non_single_commit_feature](#feature-branch-multiple-commits)
+   * [samsao.check_wrong_branching_model](#branching-model)
+   * [samsao.check_work_in_progess_pr](#when-work-in-progess-pr)
  * [Helpers](#helpers)
    * [samsao.changelog_modified?](#changelog-modified)
    * [samsao.feature_branch?](#feature-branch)
@@ -63,7 +64,7 @@ easier. This is done by using the `config` attributes the plugin:
 
 ```
 samsao.config do
-  changelogs 'CHANGELOG.yml'
+  changelogs 'CHANGELOG.md'
   project_type :library
   sources 'app/src'
 end
@@ -73,15 +74,15 @@ end
 
 Defaults: `[CHANGELOG.md]`
 
-Enable to change the CHANGELOG file paths looked upon when checking if
-CHANGELOG file has been modified or not.
+Enable to change the CHANGELOG file paths looked upon when checking if CHANGELOG 
+file has been modified or not.
 
 #### Project Type
 
 Defaults: `:application`
 
-Change the kind of project your are currently developing. This settings
-affects these actions and helpers:
+Change the kind of project you are currently developing. This settings affects 
+these actions and helpers:
 
  * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
 
@@ -91,8 +92,8 @@ See the exact actions or helpers for precise details about implications.
 
 Default: `[]`
 
-Enable to change which paths are considered has being source files of the
-project. Multiple entries can be passed. Accepts multiple entries to be passed:
+Enable to change which paths are considered as being source files of the project. 
+Multiple entries can be passed. Accepts multiple entries to be passed:
 
 ```
 samsao.config do
@@ -106,7 +107,7 @@ Each source entry can be a `Regexp`
 sources /^(common|mobile|web|/src)/
 ```
 
-Or a pure `String`. When a pure string, matches start of git modified files list:
+Or a pure `String`. When a pure string, matches the start of git modified files list:
 
 ```
   sources 'common/src'
@@ -116,18 +117,39 @@ Would match `common/src/a/b.txt` but not `other/common/src/a/b.txt`.
 
 ### Actions
 
-Here all the actions you can call in your own `Dangerfile` and how to
-configure them.
+Here all the actions you can call in your own `Dangerfile` and how to configure them. 
+
+#### Report Levels
+
+Each action as a `level` parameter that can be set to fail, warn or simply write 
+a message if the check fails. Each action also has a default value for the check.
+
+The possible values for `level` are the following:
+ * `:fail`
+ * `:warn`
+ * `:message`
+
+For example since `check_wrong_branching_model` has the default value of `:fail`. 
+If you don't want this check to reject your PR, you can overwrite it by writing :
+
+```
+samsao.check_wrong_branching_model :warn
+```
+
+Note that only a `:fail` will reject the PR.
 
 #### Branching Model
 
 ```
-samsao.fail_when_wrong_branching_model
+samsao.check_wrong_branching_model level = :fail
 ```
 
-Going to make the PR fails when the branch does not respect the git branching
-model. We follow git flow branching model and failure will occurs if the branch
-name does not start with one of the following prefixes:
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if the branch does not respect the git branching model. We follow git flow 
+branching model and if the branch name does not start with one of the following 
+prefixes:
 
  * `fix/`
  * `bugfix/`
@@ -139,47 +161,57 @@ name does not start with one of the following prefixes:
 #### CHANGELOG Update Missing
 
 ```
-samsao.fail_when_changelog_update_missing
+samsao.check_changelog_update_missing level = :fail
 ```
 
-This action reports a failure when a PR is made that is not flagged
-as a [trivial change](#trivial-change) and the changelog (based on
-`changelogs` config options) has not been modified.
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
 
-When the project is of type `:application`, a change made to a [support
-branch](#support-branch) will not trigger a failure even if the changelog
-is not updated.
+Check if when a PR is made that is not flagged as a [trivial change](#trivial-change) 
+and the changelog (based on `changelogs` config options) has not been modified.
+
+When the project is of type `:application`, a change made to a [support branch]
+(#support-branch) will pass even if the changelog is not updated.
 
 #### Feature Branch Multiple Commits
 
 ```
-samsao.fail_when_non_single_commit_feature
+samsao.check_non_single_commit_feature level = :fail)
 ```
 
-Going to make the PR fails when it's a feature branch (starts with `feature/`)
-and the PR contains more than one commit.
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if it's a feature branch (starts with `feature/`) and the PR contains more 
+than one commit.
 
 #### Merge Commit(s) Detected
 
 ```
-samsao.fail_when_merge_commit_detected
+samsao.check_merge_commit_detected level = :fail
 ```
 
-Going to make the PR fails when one or multipl merge commits are detcted.
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if one or multiple merge commits are detected.
+
 A merge commit is one created when merging two branches and matching the
 regexp `^Merge branch '<base branch>'` where `<base branch>` is the branch
 the PR is being merged into (usually `develop`).
 
-Use a Git `rebase` to get rid of those commits and correctly sync up with
-`develop` branch.
+Use a Git `rebase` to get rid of those commits and correctly sync up with `develop` branch.
 
 #### Work in Progress PR
 
 ```
-samsao.warn_when_work_in_progess_pr
+samsao.check_work_in_progess_pr level = :warn
 ```
 
-Going to mark PR as in warning state when PR title contains the `[WIP]` marker
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if the PR title contains the `[WIP]` marker
 
 ### Helpers
 
@@ -189,11 +221,11 @@ Going to mark PR as in warning state when PR title contains the `[WIP]` marker
 samsao.changelog_modified?
 ```
 
-When no arguments are given, returns true if any configured [changelogs](#changelogs) has
-been modified in this commit.
+When no arguments are given, returns true if any configured [changelogs](#changelogs) 
+has been modified in this commit.
 
-When one or more arguments is given, returns true if any given changelog entry file has been
-modified in this commit.
+When one or more arguments are given, returns true if any given changelog entry 
+file has been modified in this commit.
 
 #### Has App Changes?
 
@@ -201,12 +233,12 @@ modified in this commit.
 samsao.has_app_changes?
 ```
 
-When no arguments are given, returns true if any configured [source files](#sources) has
-been modified in this commit.
+When no arguments are given, returns true if any configured [source files](#sources) 
+has been modified in this commit.
 
-When one or more arguments is given, uses same rules as for [source files](#sources) (see
-section for details) and returns true if any given source entry files has been modified in this
-commit.
+When one or more arguments are given, uses same rules as for [source files](#sources) 
+(see section for details) and returns true if any given source entry files have 
+been modified in this commit.
 
 #### Feature Branch?
 
@@ -310,7 +342,7 @@ on the current commit of the current branch (should be the release commit
 made earlier) named `v0.1.0`. And it will finally push the branch & tag to the
 repository as well as building and publishing the gem on RubyGems.
 
-Last thing to do is bumping to next development version. Edit back
+The last thing to do is bumping to next development version. Edit back
 `CHANGELOG.md` so that `## In progress` is the new section header and
 add a bunch of empty lines (around 10, only 2 shown in the example for
 brevity) into single `Features` section (add other sections when updating
@@ -333,7 +365,7 @@ Also edit `lib/samsao/gem_version.rb` so that next development version
 value is used `VERSION = '0.1.1.pre1'.freeze`. The `.pre1` is the lowest
 possible version before the official `0.1.1` one (or higher).
 
-Commit all this changes together in a new commit that has the following
+Commit all these changes together in a new commit that has the following
 message:
 
 ```
@@ -341,5 +373,5 @@ Bumped to next development version
 ```
 
 Finally, create a PR with this branch and open a pull request and merge
-right away (your team mates should known in advance that a release is
+right away (your teammates should know in advance that a release is
 happening and branch merged faster than other ones).

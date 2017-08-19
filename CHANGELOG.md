@@ -1,8 +1,20 @@
-## In progress
+## 0.3.0 In progress
+
+### Breaking Changes
+
+ * Renamed the following methods to match the `level` parameter they now optionally receive:
+    * `fail_when_wrong_branching_model` to `check_wrong_branching_model`
+    * `fail_when_non_single_commit_feature` to `check_non_single_commit_feature`
+    * `fail_when_changelog_update_missing` to `check_changelog_update_missing`
+    * `fail_when_merge_commit_detected` to `check_merge_commit_detected`
+    * `warn_when_work_in_progess_pr` to `check_work_in_progess_pr`
 
 #### Features
 
- *
+ * Added `level` parameter to all actions to personnalize the report level 
+   (`:fail`, `:warn`, `:message`) if the check fails. 
+
+ * Added `have_message` and `have_no_message` matchers.
 
  *
 
@@ -14,7 +26,9 @@
 
  *
 
- *
+#### Support
+
+ * Fixed grammatical errors in the `README.md`.
 
 #### Support
 

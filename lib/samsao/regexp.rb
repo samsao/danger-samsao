@@ -4,7 +4,7 @@ module Samsao
     # Turns a source entry input into a Regexp. Uses rules from [from_matcher](#from_matcher)
     # function and append a `^` to final regexp when the source if a pure String.
     #
-    # @param matcher The source entry to transform into a Regexp
+    # @param source The source entry to transform into a Regexp
     #
     # @return [Regexp] The source entry as a regexp
     def self.from_source(source)

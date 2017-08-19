@@ -1,52 +1,82 @@
 module Samsao
   # Actions mixin module
   module Actions
-    # Fails when git branching model is not respected for PR branch name.
+    # Check if the git branching model is not respected for PR branch name.
+    #
+    # @param level (Default: :fail) The report level (:fail, :warn, :message) if the check fails [report](#report)
     #
     # @return [void]
-    def fail_when_wrong_branching_model
+    def check_wrong_branching_model(level = :fail)
       message = 'Your branch should be prefixed with feature/, fix/, bugfix/, hotfix/, release/ or support/!'
 
-      fail message unless respects_branching_model
+      report(level, message) unless respects_branching_model
     end
 
-    # Fails when a feature branch have than one commit
+    # Check if a feature branch have more than one commit.
+    #
+    # @param level (Default: :fail) The report level (:fail, :warn, :message) if the check fails [report](#report)
     #
     # @return [void]
-    def fail_when_non_single_commit_feature
+    def check_non_single_commit_feature(level = :fail)
       commit_count = git.commits.size
       message = "Your feature branch should have a single commit but found #{commit_count}, squash them together!"
 
-      fail message if feature_branch? && commit_count > 1
+      report(level, message) if feature_branch? && commit_count > 1
     end
 
-    # Fails when CHANGELOG is not updated on feature or fix branches
+    # Check if the CHANGELOG wasn't updated on feature or fix branches.
+    #
+    # @param level (Default: :fail) The report level (:fail, :warn, :message) if the check fails [report](#report)
     #
     # @return [void]
-    def fail_when_changelog_update_missing
+    def check_changelog_update_missing(level = :fail)
       return if trivial_change?
       return if support_branch? && config.project_type == :application
 
-      fail 'You did a change without updating CHANGELOG file!' unless changelog_modified?
+      report(level, 'You did a change without updating CHANGELOG file!') unless changelog_modified?
     end
 
-    # Fails when one or more merge commit is detected.
+    # Check if one or more merge commit is detected.
+    #
+    # @param level (Default: :fail) The report level (:fail, :warn, :message) if the check fails [report](#report)
     #
     # @return [void]
-    def fail_when_merge_commit_detected
+    def check_merge_commit_detected(level = :fail)
       message = 'Some merge commits were detected, you must use rebase to sync with base branch.'
       merge_commit_detector = /^Merge branch '#{github.branch_for_base}'/
 
-      fail message if git.commits.any? { |commit| commit.message =~ merge_commit_detector }
+      report(level, message) if git.commits.any? { |commit| commit.message =~ merge_commit_detector }
     end
 
-    # Fails when CHANGELOG is not updated on feature or fix branches
+    # Check for work in progress commit message in PR.
+    #
+    # @param level (Default: :warn) The report level (:fail, :warn, :message) if the check fails [report](#report)
     #
     # @return [void]
-    def warn_when_work_in_progess_pr
-      message = 'Do not merge, PR is a work in progess [WIP]!'
+    def check_work_in_progess_pr(level = :warn)
+      report(level, 'Do not merge, PR is a work in progess [WIP]!') if github.pr_title.include?('[WIP]')
+    end
 
-      warn message if github.pr_title.include?('[WIP]')
+    # Send report to danger depending on the level
+    #
+    # @param level The report level sent to Danger :
+    #   :message  > Comment a message to the table
+    #   :warn     > Declares a CI warning
+    #   :fail  > Declares a CI blocking error
+    # @param content The message of the report sent to Danger
+    #
+    # @return [void]
+    def report(level, content)
+      case level
+      when :warn
+        warn content
+      when :fail
+        fail content
+      when :message
+        message content
+      else
+        raise "Report level '#{level}' is invalid."
+      end
     end
   end
 end

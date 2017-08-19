@@ -15,7 +15,7 @@ module Danger
           it "continues on #{branch_prefix}/ prefix" do
             allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch_prefix}/something")
 
-            @plugin.fail_when_wrong_branching_model
+            @plugin.check_wrong_branching_model
 
             expect(@dangerfile).to have_no_error
           end
@@ -24,7 +24,7 @@ module Danger
         it 'fails on wrong prefix' do
           allow(@plugin.github).to receive(:branch_for_head).and_return('wrong/12')
 
-          @plugin.fail_when_wrong_branching_model
+          @plugin.check_wrong_branching_model
 
           expect(@dangerfile).to have_error(@wrong_branching_model)
         end
@@ -32,7 +32,7 @@ module Danger
         it 'fails on good prefix but wrong format' do
           allow(@plugin.github).to receive(:branch_for_head).and_return('feature_12')
 
-          @plugin.fail_when_wrong_branching_model
+          @plugin.check_wrong_branching_model
 
           expect(@dangerfile).to have_error(@wrong_branching_model)
         end

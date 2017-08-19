@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    danger-samsao (0.2.1.pre1)
+    danger-samsao (0.3.0.pre1)
       danger-plugin-api (~> 1.0)
 
 GEM
@@ -134,4 +134,4 @@ DEPENDENCIES
   yard (~> 0.8)
 
 BUNDLED WITH
-   1.14.4
+   1.14.6

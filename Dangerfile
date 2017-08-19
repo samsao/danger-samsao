@@ -7,13 +7,13 @@ samsao.config do
 end
 
 ## Errors
-samsao.fail_when_changelog_update_missing
-samsao.fail_when_merge_commit_detected
-samsao.fail_when_non_single_commit_feature
-samsao.fail_when_wrong_branching_model
+samsao.check_changelog_update_missing
+samsao.check_merge_commit_detected
+samsao.check_non_single_commit_feature
+samsao.check_wrong_branching_model
 
 ## Warnings
-samsao.warn_when_work_in_progess_pr
+samsao.check_work_in_progess_pr
 
 ## Messages
 unless status_report[:errors].empty?

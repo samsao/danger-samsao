@@ -15,7 +15,7 @@ module Danger
         it 'continues on support branch' do
           allow(@plugin.github).to receive(:branch_for_head).and_return('support/a')
 
-          @plugin.fail_when_changelog_update_missing
+          @plugin.check_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
         end
@@ -25,7 +25,7 @@ module Danger
             allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch}/a")
             allow(@plugin.git).to receive(:modified_files).and_return(['CHANGELOG.md'])
 
-            @plugin.fail_when_changelog_update_missing
+            @plugin.check_changelog_update_missing
 
             expect(@dangerfile).to have_no_error
           end
@@ -34,7 +34,7 @@ module Danger
             allow(@plugin.github).to receive(:branch_for_head).and_return("#{branch}/a")
             allow(@plugin.git).to receive(:modified_files).and_return([])
 
-            @plugin.fail_when_changelog_update_missing
+            @plugin.check_changelog_update_missing
 
             expect(@dangerfile).to have_error(@changelog_needs_update)
           end
@@ -48,7 +48,7 @@ module Danger
           allow(@plugin.github).to receive(:branch_for_head).and_return('fix/a')
           allow(@plugin.git).to receive(:modified_files).and_return(['CHANGELOG.yml'])
 
-          @plugin.fail_when_changelog_update_missing
+          @plugin.check_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
         end
@@ -61,7 +61,7 @@ module Danger
           allow(@plugin.github).to receive(:branch_for_head).and_return('fix/a')
           allow(@plugin.git).to receive(:modified_files).and_return(['web/CHANGELOG.md'])
 
-          @plugin.fail_when_changelog_update_missing
+          @plugin.check_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
         end
@@ -70,7 +70,7 @@ module Danger
           allow(@plugin).to receive(:trivial_change?).and_return(true)
           allow(@plugin.git).to receive(:modified_files).and_return([])
 
-          @plugin.fail_when_changelog_update_missing
+          @plugin.check_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
         end
@@ -83,7 +83,7 @@ module Danger
           allow(@plugin).to receive(:support_branch?).and_return(true)
           allow(@plugin.git).to receive(:modified_files).and_return([])
 
-          @plugin.fail_when_changelog_update_missing
+          @plugin.check_changelog_update_missing
 
           expect(@dangerfile).to have_no_error
         end
@@ -96,7 +96,7 @@ module Danger
           allow(@plugin).to receive(:support_branch?).and_return(true)
           allow(@plugin.git).to receive(:modified_files).and_return([])
 
-          @plugin.fail_when_changelog_update_missing
+          @plugin.check_changelog_update_missing
 
           expect(@dangerfile).to have_error(@changelog_needs_update)
         end

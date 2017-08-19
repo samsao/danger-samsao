@@ -15,7 +15,7 @@ module Danger
         it 'continues when no commits' do
           allow(@plugin.git).to receive(:commits).and_return([])
 
-          @plugin.fail_when_merge_commit_detected
+          @plugin.check_merge_commit_detected
 
           expect(@dangerfile).to have_no_error
         end
@@ -26,7 +26,7 @@ module Danger
             commit('two'),
           ])
 
-          @plugin.fail_when_merge_commit_detected
+          @plugin.check_merge_commit_detected
 
           expect(@dangerfile).to have_no_error
         end
@@ -37,7 +37,7 @@ module Danger
             commit("Merge branch 'develop'"),
           ])
 
-          @plugin.fail_when_merge_commit_detected
+          @plugin.check_merge_commit_detected
 
           expect(@dangerfile).to have_error(@merge_commits_detected)
         end
@@ -48,7 +48,7 @@ module Danger
             commit("Merge branch 'develop'"),
           ])
 
-          @plugin.fail_when_merge_commit_detected
+          @plugin.check_merge_commit_detected
 
           expect(@dangerfile).to have_error(@merge_commits_detected)
         end
@@ -59,7 +59,7 @@ module Danger
             commit("Merge branch 'test'"),
           ])
 
-          @plugin.fail_when_merge_commit_detected
+          @plugin.check_merge_commit_detected
 
           expect(@dangerfile).to have_error(@merge_commits_detected)
         end

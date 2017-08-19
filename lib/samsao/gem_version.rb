@@ -1,3 +1,3 @@
 module Samsao
-  VERSION = '0.2.1.pre1'.freeze
+  VERSION = '0.3.0.pre1'.freeze
 end

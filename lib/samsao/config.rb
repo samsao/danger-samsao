@@ -7,12 +7,19 @@ module Danger
       @changelogs = ['CHANGELOG.md']
       @sources = []
       @project_type = :application
+      @project_key = nil
     end
 
     def changelogs(*entries)
       return @changelogs if entries.nil? || entries.empty?
 
       @changelogs = entries
+    end
+
+    def project_key(key = nil)
+      return @project_key if key.nil?
+
+      @project_key = validate_project_key(key)
     end
 
     def project_type(type = nil)
@@ -28,6 +35,12 @@ module Danger
     end
 
     private
+
+    def validate_project_key(key)
+      return key unless (/^[A-Z]{1,10}$/ =~ key).nil?
+
+      raise "Project key '#{key}' is invalid, must be uppercase and between 1 and 10 characters"
+    end
 
     def validate_project_type(type)
       return type if valid_project_type?(type)

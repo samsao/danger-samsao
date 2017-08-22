@@ -20,6 +20,18 @@
 
  * Added `check_acceptance_criteria` action.
 
+ * Added `check_feature_jira_issue_number` action.
+
+ * Added `check_fix_jira_issue_number` action.
+
+ * Added `contains_jira_issue_number?` helper.
+
+ * Added `jira_project_key?` helper.
+
+ * Added `shorten_sha` helper.
+
+ * Added `truncate` helper.
+
  *
 
  *

@@ -15,6 +15,8 @@
    (`:fail`, `:warn`, `:message`) if the check fails. 
 
  * Added `have_message` and `have_no_message` matchers.
+ 
+ * Added `check_label_pr` action.
 
  * Added `check_acceptance_criteria` action.
 

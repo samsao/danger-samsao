@@ -71,6 +71,18 @@ module Samsao
       report(level, message) if (/acceptance criteria/i =~ github.pr_body).nil?
     end
 
+    # Check if the PR has at least one label added to it.
+    #
+    # @param  [Symbol] level (Default: :fail)
+    #         The report level (:fail, :warn, :message) if the check fails [report](#report)
+    # @return [void]
+    #
+    def check_label_pr(level = :fail)
+      message = 'The PR should have at least one label added to it.'
+
+      report(level, message) if github.pr_labels.nil? || github.pr_labels.empty?
+    end
+
     # Send report to danger depending on the level
     #
     # @param level The report level sent to Danger :

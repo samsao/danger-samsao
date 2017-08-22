@@ -79,6 +79,32 @@ module Danger
           expect { @plugin.config { project_type 'custom' } }.to raise_error(message)
         end
       end
+
+      describe 'config project_key' do
+        it 'accepts project key' do
+          project_key = 'VER'
+
+          @plugin.config do
+            project_key project_key
+          end
+
+          expect(@plugin.config.project_key).to eq(project_key)
+        end
+
+        it 'reject invalid project key containing numbers' do
+          project_key = '123'
+          message = "Project key '#{project_key}' is invalid, must be uppercase and between 1 and 10 characters"
+
+          expect { @plugin.config { project_key project_key } }.to raise_error(message)
+        end
+
+        it 'reject invalid project key containing lowercase characters' do
+          project_key = 'invalid'
+          message = "Project key '#{project_key}' is invalid, must be uppercase and between 1 and 10 characters"
+
+          expect { @plugin.config { project_key project_key } }.to raise_error(message)
+        end
+      end
     end
   end
 end

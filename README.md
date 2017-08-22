@@ -44,15 +44,18 @@ your `Dangerfile` under the `samsao` namespace.
  * [Actions](#actions)
    * [Report Levels](#report-levels)
    * [samsao.check_changelog_update_missing](#changelog-update-missing)
+   * [samsao.check_feature_jira_issue_number](#feature-jira-issue-number)
    * [samsao.check_merge_commit_detected](#merge-commits-detected)
    * [samsao.check_non_single_commit_feature](#feature-branch-multiple-commits)
    * [samsao.check_wrong_branching_model](#branching-model)
    * [samsao.check_work_in_progess_pr](#when-work-in-progess-pr)
  * [Helpers](#helpers)
    * [samsao.changelog_modified?](#changelog-modified)
+   * [samsao.contains_single_jira_issue_number?](#contains-single-jira-issue-number)
    * [samsao.feature_branch?](#feature-branch)
    * [samsao.fix_branch?](#fix-branch)
    * [samsao.has_app_changes?](#has-app-changes)
+   * [samsao.project_key?](#project-key)
    * [samsao.release_branch?](#release-branch)
    * [samsao.support_branch?](#support-branch)
    * [samsao.trivial_change?](#trivial-change)
@@ -65,6 +68,7 @@ easier. This is done by using the `config` attributes the plugin:
 ```
 samsao.config do
   changelogs 'CHANGELOG.md'
+  project_key 'VER'
   project_type :library
   sources 'app/src'
 end
@@ -77,6 +81,18 @@ Defaults: `[CHANGELOG.md]`
 Enable to change the CHANGELOG file paths looked upon when checking if CHANGELOG 
 file has been modified or not.
 
+#### Project Key
+
+Defaults: nil
+
+Example: `VER`
+
+This refers to the project key on Jira. This settings affects these actions and helpers:
+
+ * [samsao.check_feature_misses_jira_issue_number](#feature-misses-jira-issue-number)
+
+See the exact actions or helpers for precise details about implications.
+
 #### Project Type
 
 Defaults: `:application`
@@ -84,7 +100,7 @@ Defaults: `:application`
 Change the kind of project you are currently developing. This settings affects 
 these actions and helpers:
 
- * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
+ * [samsao.check_when_changelog_update_missing](#changelog-update-missing)
 
 See the exact actions or helpers for precise details about implications.
 
@@ -161,7 +177,7 @@ prefixes:
 #### CHANGELOG Update Missing
 
 ```
-samsao.check_changelog_update_missing level = :fail
+samsao.check_changelog_update_missing(level = :fail)
 ```
 
 Parameters:
@@ -176,7 +192,7 @@ When the project is of type `:application`, a change made to a [support branch]
 #### Feature Branch Multiple Commits
 
 ```
-samsao.check_non_single_commit_feature level = :fail)
+samsao.check_non_single_commit_feature(level = :fail)
 ```
 
 Parameters:
@@ -185,10 +201,24 @@ Parameters:
 Check if it's a feature branch (starts with `feature/`) and the PR contains more 
 than one commit.
 
+#### Feature Jira Issue Number
+
+```
+samsao.check_feature_jira_issue_number(level = :fail)
+```
+
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if it's a feature branch (starts with `feature/`) and the PR title contains the
+issue number using your configuration's [project key](#trivial-change).
+
+Example : `[VER-123] Adding new screen.`
+
 #### Merge Commit(s) Detected
 
 ```
-samsao.check_merge_commit_detected level = :fail
+samsao.check_merge_commit_detected(level = :fail)
 ```
 
 Parameters:
@@ -205,7 +235,7 @@ Use a Git `rebase` to get rid of those commits and correctly sync up with `devel
 #### Work in Progress PR
 
 ```
-samsao.check_work_in_progess_pr level = :warn
+samsao.check_work_in_progess_pr(level = :warn)
 ```
 
 Parameters:
@@ -226,6 +256,17 @@ has been modified in this commit.
 
 When one or more arguments are given, returns true if any given changelog entry 
 file has been modified in this commit.
+
+#### Contains Single Jira Issue Number?
+
+```
+samsao.contains_single_jira_issue_number?
+```
+
+Return true if the PR title contains the issue number using your configuration's
+[project key](#trivial-change).
+
+Example : `[VER-123] Adding new screen.`
 
 #### Has App Changes?
 
@@ -255,6 +296,14 @@ samsao.fix_branch?
 ```
 
 Returns true if the PR branch starts with `fix/`, `bugfix/` or `hotfix/`.
+
+#### Project key?
+
+```
+samsao.project_key?
+```
+
+Return true if the config has a [project key](#project-key).
 
 #### Release Branch?
 

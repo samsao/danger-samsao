@@ -57,7 +57,21 @@ module Samsao
       report(level, 'Do not merge, PR is a work in progess [WIP]!') if github.pr_title.include?('[WIP]')
     end
 
-    # Send report to danger depending on the level
+    # Check if a feature branch contains a single JIRA issue number.
+    #
+    # @param level (Default: :fail) The report level (:fail, :warn, :message) if the check fails [report](#report)
+    #
+    # @return [void]
+    def check_feature_jira_issue_number(level = :fail)
+      return if samsao.trivial_change? || !samsao.feature_branch?
+      return report(:fail, 'Your Danger config is missing a `project_key` value.') unless project_key?
+
+      message = "The PR must starts with JIRA issue number between square brackets (i.e. [#{config.project_key}-XXX])."
+
+      report(level, message) unless contains_single_jira_issue_number?
+    end
+
+    # Send report to danger depending on the level.
     #
     # @param level The report level sent to Danger :
     #   :message  > Comment a message to the table

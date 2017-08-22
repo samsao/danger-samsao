@@ -57,6 +57,20 @@ module Samsao
       report(level, 'Do not merge, PR is a work in progess [WIP]!') if github.pr_title.include?('[WIP]')
     end
 
+    # Check if it's a feature branch and if the PR body contains acceptance criteria
+    #
+    # @param  [Symbol] level (Default: :warn)
+    #         The report level (:fail, :warn, :message) if the check fails [report](#report)
+    # @return [void]
+    #
+    def check_acceptance_criteria(level = :warn)
+      return unless samsao.feature_branch?
+
+      message = 'The PR should have the acceptance criteria in the body.'
+
+      report(level, message) if (/acceptance criteria/i =~ github.pr_body).nil?
+    end
+
     # Send report to danger depending on the level
     #
     # @param level The report level sent to Danger :

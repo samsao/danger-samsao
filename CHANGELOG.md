@@ -16,11 +16,11 @@
 
  * Added `have_message` and `have_no_message` matchers.
 
- *
+ * Added `check_feature_misses_jira_issue_number` action.
 
- *
+ * Added `project_key?` helper. 
 
- *
+ * Added `contains_single_jira_issue_number?` helper.
 
  *
 

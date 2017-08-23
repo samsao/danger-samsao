@@ -43,6 +43,7 @@ your `Dangerfile` under the `samsao` namespace.
  * [Config](#config)
  * [Actions](#actions)
    * [Report Levels](#report-levels)
+   * [samsao.check_acceptance_criteria](#acceptance-criteria)
    * [samsao.check_changelog_update_missing](#changelog-update-missing)
    * [samsao.check_merge_commit_detected](#merge-commits-detected)
    * [samsao.check_non_single_commit_feature](#feature-branch-multiple-commits)
@@ -137,6 +138,18 @@ samsao.check_wrong_branching_model :warn
 ```
 
 Note that only a `:fail` will reject the PR.
+
+#### Acceptance Criteria
+
+```
+samsao.check_acceptance_criteria(level = :warn)
+```
+
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if it's a feature branch (starts with `feature/`) and if the PR body contains
+the string `acceptance criteria`.
 
 #### Branching Model
 

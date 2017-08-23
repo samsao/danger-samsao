@@ -1,4 +1,4 @@
-## 0.3.0 In progress
+## 0.3.0 (August 23, 2017)
 
 ### Breaking Changes
 

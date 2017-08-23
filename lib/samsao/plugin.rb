@@ -18,6 +18,7 @@ module Danger
     # Enable to configure the plugin configuration object.
     #
     # @return [Array<String>] (if no block given)
+    #
     def config(&block)
       @config = Danger::SamsaoConfig.new if @config.nil?
       return @config unless block_given?

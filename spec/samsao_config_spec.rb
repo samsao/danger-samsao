@@ -79,6 +79,34 @@ module Danger
           expect { @plugin.config { project_type 'custom' } }.to raise_error(message)
         end
       end
+
+      describe 'config jira_project_key' do
+        it 'accepts jira project key' do
+          jira_project_key = 'VER'
+
+          @plugin.config do
+            jira_project_key jira_project_key
+          end
+
+          expect(@plugin.config.jira_project_key).to eq(jira_project_key)
+        end
+
+        it 'reject invalid jira project key containing numbers' do
+          jira_project_key = '123'
+          message = "Jira project key '#{jira_project_key}' is invalid, must be"\
+                    ' uppercase and between 1 and 10 characters'
+
+          expect { @plugin.config { jira_project_key jira_project_key } }.to raise_error(message)
+        end
+
+        it 'reject invalid jira project key containing lowercase characters' do
+          jira_project_key = 'invalid'
+          message = "Jira project key '#{jira_project_key}' is invalid, must be"\
+                    ' uppercase and between 1 and 10 characters'
+
+          expect { @plugin.config { jira_project_key jira_project_key } }.to raise_error(message)
+        end
+      end
     end
   end
 end

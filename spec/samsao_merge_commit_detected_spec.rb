@@ -64,18 +64,6 @@ module Danger
           expect(@dangerfile).to have_error(@merge_commits_detected)
         end
       end
-
-      def commit(message)
-        Commit.new(message)
-      end
-
-      class Commit
-        attr_reader :message
-
-        def initialize(message)
-          @message = message
-        end
-      end
     end
   end
 end

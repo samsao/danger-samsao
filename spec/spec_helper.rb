@@ -54,3 +54,18 @@ def testing_dangerfile
 
   Danger::Dangerfile.new(env, testing_ui)
 end
+
+# A commit class to create test
+def commit(message, sha = nil)
+  Commit.new(message, sha)
+end
+
+class Commit
+  attr_reader :message
+  attr_reader :sha
+
+  def initialize(message, sha)
+    @message = message
+    @sha = sha
+  end
+end

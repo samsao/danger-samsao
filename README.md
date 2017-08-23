@@ -41,10 +41,16 @@ your `Dangerfile` under the `samsao` namespace.
 ### Table of Contents
 
  * [Config](#config)
+   * [Changelogs](#changelogs)
+   * [Jira Project Key](#jira-project-key)
+   * [Project Type](#project-type)
+   * [Sources](#sources)
  * [Actions](#actions)
    * [Report Levels](#report-levels)
    * [samsao.check_acceptance_criteria](#acceptance-criteria)
    * [samsao.check_changelog_update_missing](#changelog-update-missing)
+   * [samsao.check_feature_jira_issue_number](#feature-jira-issue-number)
+   * [samsao.check_fix_jira_issue_number](#fix-jira-issue-number) 
    * [samsao.check_label_pr](#label_pr)
    * [samsao.check_merge_commit_detected](#merge-commits-detected)
    * [samsao.check_non_single_commit_feature](#feature-branch-multiple-commits)
@@ -52,12 +58,17 @@ your `Dangerfile` under the `samsao` namespace.
    * [samsao.check_work_in_progess_pr](#when-work-in-progess-pr)
  * [Helpers](#helpers)
    * [samsao.changelog_modified?](#changelog-modified)
+   * [samsao.contains_any_jira_issue_number?](#contains-any-jira-issue-number) 
+   * [samsao.contains_single_jira_issue_number?](#contains-single-jira-issue-number)
    * [samsao.feature_branch?](#feature-branch)
    * [samsao.fix_branch?](#fix-branch)
    * [samsao.has_app_changes?](#has-app-changes)
+   * [samsao.jira_project_key?](#has-jira-project-key)
    * [samsao.release_branch?](#release-branch)
+   * [samsao.shorten_sha](#shorten-sha) 
    * [samsao.support_branch?](#support-branch)
    * [samsao.trivial_change?](#trivial-change)
+   * [samsao.truncate](#truncate) 
 
 ### Config
 
@@ -67,6 +78,7 @@ easier. This is done by using the `config` attributes the plugin:
 ```
 samsao.config do
   changelogs 'CHANGELOG.md'
+  jira_project_key 'VER'
   project_type :library
   sources 'app/src'
 end
@@ -79,6 +91,19 @@ Defaults: `[CHANGELOG.md]`
 Enable to change the CHANGELOG file paths looked upon when checking if CHANGELOG 
 file has been modified or not.
 
+#### Jira Project Key
+
+Defaults: nil
+
+Example: `VER`
+
+This refers to the project key on Jira. This settings affects these actions and helpers:
+
+ * [samsao.check_feature_jira_issue_number](#feature-jira-issue-number)
+ * [samsao.check_fix_jira_issue_number](#fix-jira-issue-number)
+
+See the exact actions or helpers for precise details about implications.
+
 #### Project Type
 
 Defaults: `:application`
@@ -86,7 +111,7 @@ Defaults: `:application`
 Change the kind of project you are currently developing. This settings affects 
 these actions and helpers:
 
- * [samsao.fail_when_changelog_update_missing](#changelog-update-missing)
+ * [samsao.check_when_changelog_update_missing](#changelog-update-missing)
 
 See the exact actions or helpers for precise details about implications.
 
@@ -155,7 +180,7 @@ the string `acceptance criteria`.
 #### Branching Model
 
 ```
-samsao.check_wrong_branching_model level = :fail
+samsao.check_wrong_branching_model(level = :fail)
 ```
 
 Parameters:
@@ -175,7 +200,7 @@ prefixes:
 #### CHANGELOG Update Missing
 
 ```
-samsao.check_changelog_update_missing level = :fail
+samsao.check_changelog_update_missing(level = :fail)
 ```
 
 Parameters:
@@ -201,7 +226,7 @@ Check if the PR has at least one label added to it.
 #### Feature Branch Multiple Commits
 
 ```
-samsao.check_non_single_commit_feature level = :fail)
+samsao.check_non_single_commit_feature(level = :fail)
 ```
 
 Parameters:
@@ -210,10 +235,38 @@ Parameters:
 Check if it's a feature branch (starts with `feature/`) and the PR contains more 
 than one commit.
 
+#### Feature Jira Issue Number
+
+```
+samsao.check_feature_jira_issue_number(level = :fail)
+```
+
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if it's a feature branch (starts with `feature/`) and the PR title contains the
+issue number using your configuration's [jira project key](#jira-project-key).
+
+Example : `[VER-123] Adding new screen.`
+
+#### Fix Jira Issue Number
+
+```
+samsao.check_fix_jira_issue_number(level = :warn)
+```
+
+Parameters:
+ * `level` |  The [report level](#report-levels) to use when the check does not pass.
+
+Check if it's a feature branch (starts with `fix/`, `bugfix/` or `hotfix/`.) and if every
+commit message contains any issue number using your configuration's [jira project key](#jira-project-key).
+
+Example : `[VER-123, VER-124, VER-125] Bug fixes.`
+
 #### Merge Commit(s) Detected
 
 ```
-samsao.check_merge_commit_detected level = :fail
+samsao.check_merge_commit_detected(level = :fail)
 ```
 
 Parameters:
@@ -230,7 +283,7 @@ Use a Git `rebase` to get rid of those commits and correctly sync up with `devel
 #### Work in Progress PR
 
 ```
-samsao.check_work_in_progess_pr level = :warn
+samsao.check_work_in_progess_pr(level = :warn)
 ```
 
 Parameters:
@@ -252,18 +305,16 @@ has been modified in this commit.
 When one or more arguments are given, returns true if any given changelog entry 
 file has been modified in this commit.
 
-#### Has App Changes?
+#### Contains Jira Issue Number?
 
 ```
-samsao.has_app_changes?
+samsao.contains_jira_issue_number?(input)
 ```
 
-When no arguments are given, returns true if any configured [source files](#sources) 
-has been modified in this commit.
+Return true if input contains the issue number using your configuration's
+[jira project key](#jira-project-key). The input could be a PR title or a commit message.
 
-When one or more arguments are given, uses same rules as for [source files](#sources) 
-(see section for details) and returns true if any given source entry files have 
-been modified in this commit.
+Example : `[VER-123] Adding new screen.` or `[VER-123, VER-124, VER-125] Bug fixes.`
 
 #### Feature Branch?
 
@@ -281,6 +332,27 @@ samsao.fix_branch?
 
 Returns true if the PR branch starts with `fix/`, `bugfix/` or `hotfix/`.
 
+#### Has App Changes?
+
+```
+samsao.has_app_changes?
+```
+
+When no arguments are given, returns true if any configured [source files](#sources) 
+has been modified in this commit.
+
+When one or more arguments are given, uses same rules as for [source files](#sources) 
+(see section for details) and returns true if any given source entry files have 
+been modified in this commit.
+
+#### Has Jira Project Key?
+
+```
+samsao.jira_project_key?
+```
+
+Return true if the config has a [jira project key](#jira-project-key).
+
 #### Release Branch?
 
 ```
@@ -288,6 +360,17 @@ samsao.release_branch?
 ```
 
 Returns true if the PR branch starts with `release/`.
+
+#### Shorten Sha
+
+```
+samsao.shorten_sha(sha)
+```
+
+Parameters:
+ * `sha` |  The sha to shorten.
+
+Shorten the git sha to 8 characters mostly for readability.
 
 #### Support Branch?
 
@@ -304,6 +387,19 @@ samsao.trivial_change?
 ```
 
 Returns true if the PR title contains `#trivial`, `#typo` or `#typos`.
+
+#### Truncate
+
+```
+samsao.truncate(input, max = 30)
+```
+
+Parameters:
+ * `input` |  The input to truncate.
+ * `max` |  The max length of the truncated input.
+
+Truncate the input received to the max size passed as a parameter. the default value for
+the max is 30 characters.
 
 ## Development
 

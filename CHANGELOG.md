@@ -2,7 +2,7 @@
 
 #### Features
 
- *
+ * Pass tests
 
 ## 0.3.0 (August 23, 2017)
 

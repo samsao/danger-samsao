@@ -72,7 +72,7 @@ module Samsao
       return if samsao.trivial_change? || !samsao.feature_branch?
       return report(:fail, 'Your Danger config is missing a `jira_project_key` value.') unless jira_project_key?
 
-      message = 'The PR must starts with JIRA issue number between square brackets'\
+      message = 'The PR title must starts with JIRA issue number between square brackets'\
                 " (i.e. [#{config.jira_project_key}-XXX])."
 
       report(level, message) unless contains_jira_issue_number?(github.pr_title)
@@ -102,7 +102,7 @@ module Samsao
     def check_acceptance_criteria(level = :warn)
       return unless samsao.feature_branch?
 
-      message = 'The PR should have the acceptance criteria in the body.'
+      message = 'The PR description should have the acceptance criteria in the body.'
 
       report(level, message) if (/acceptance criteria/i =~ github.pr_body).nil?
     end
@@ -156,7 +156,7 @@ module Samsao
     def check_commit_contains_jira_issue_number(commit, type)
       commit_id = "#{shorten_sha(commit.sha)} ('#{truncate(commit.message)}')"
       jira_project_key = config.jira_project_key
-      message = "The commit #{commit_id} should contain JIRA issue number" \
+      message = "The commit message #{commit_id} should contain JIRA issue number" \
       " between square brackets (i.e. [#{jira_project_key}-XXX]), multiple allowed" \
       " (i.e. [#{jira_project_key}-XXX, #{jira_project_key}-YYY, #{jira_project_key}-ZZZ])"
 

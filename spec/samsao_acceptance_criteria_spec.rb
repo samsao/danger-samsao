@@ -6,7 +6,7 @@ module Danger
       before do
         @dangerfile = testing_dangerfile
         @plugin = @dangerfile.samsao
-        @message = 'The PR should have the acceptance criteria in the body.'
+        @message = 'The PR description should have the acceptance criteria in the body.'
       end
 
       describe 'check acceptance criteria' do

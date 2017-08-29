@@ -51,7 +51,7 @@ module Danger
 
           @plugin.check_fix_jira_issue_number
 
-          message = "The commit #{commit_id} should contain JIRA issue number between square brackets"\
+          message = "The commit message #{commit_id} should contain JIRA issue number between square brackets"\
                     " (i.e. [#{jira_project_key}-XXX]), multiple allowed (i.e. [#{jira_project_key}-XXX,"\
                     " #{jira_project_key}-YYY, #{jira_project_key}-ZZZ])"
 

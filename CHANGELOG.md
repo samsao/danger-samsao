@@ -1,3 +1,9 @@
+## 0.3.1 (In progress)
+
+#### Features
+
+ *
+
 ## 0.3.0 (August 23, 2017)
 
 ### Breaking Changes
@@ -31,16 +37,6 @@
  * Added `shorten_sha` helper.
 
  * Added `truncate` helper.
-
- *
-
- *
-
- *
-
- *
-
- *
 
 #### Support
 

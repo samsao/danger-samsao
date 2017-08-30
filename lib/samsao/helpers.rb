@@ -20,15 +20,16 @@ module Samsao
     # @return [Bool]
     #
     def feature_branch?
-      git_branch.start_with?('feature/')
+      !(%r{^#{GIT_BRANCH_PREFIX}feature/\w} =~ git_branch).nil?
     end
 
-    # Return true if the current PR branch is a bug fix branch.
+    # Return true if the current PR branch is a bug fix branch. Accepts `fix`,
+    # `bugfix`, `hotfix`, `coldfix` and `warmfix`.
     #
     # @return [Bool]
     #
     def fix_branch?
-      !(%r{^(bug|hot)?fix/} =~ git_branch).nil?
+      !(%r{^#{GIT_BRANCH_PREFIX}(bug|cold|warm|hot)?fix/\w} =~ git_branch).nil?
     end
 
     # Return true if the current PR branch is a release branch.
@@ -36,7 +37,7 @@ module Samsao
     # @return [Bool]
     #
     def release_branch?
-      git_branch.start_with?('release/')
+      !(%r{^#{GIT_BRANCH_PREFIX}release/\w} =~ git_branch).nil?
     end
 
     # Return true if the current PR branch is a support branch.
@@ -44,7 +45,7 @@ module Samsao
     # @return [Bool]
     #
     def support_branch?
-      git_branch.start_with?('support/')
+      !(%r{^#{GIT_BRANCH_PREFIX}support/\w} =~ git_branch).nil?
     end
 
     # Return true if the current PR is a trivial change, i.e. if PR title contains #trivial or #typo markers.
@@ -112,6 +113,8 @@ module Samsao
     end
 
     private
+
+    GIT_BRANCH_PREFIX = '([-a-z0-9._]+/)?'.freeze
 
     def git_branch
       github.branch_for_head

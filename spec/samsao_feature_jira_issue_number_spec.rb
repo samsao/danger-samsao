@@ -52,7 +52,7 @@ module Danger
 
         it 'fails on branch with no issue number' do
           jira_project_key = 'VER'
-          message = 'The PR must starts with JIRA issue number between square brackets'\
+          message = 'The PR title must starts with JIRA issue number between square brackets'\
                     " (i.e. [#{jira_project_key}-XXX])."
 
           @plugin.config do

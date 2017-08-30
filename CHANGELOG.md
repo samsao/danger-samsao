@@ -2,7 +2,13 @@
 
 #### Features
 
- *
+ * Changed the following helpers to support `2.0.0/feature/a` and `other-app/feature/a` branch models:
+    * `feature_branch?`
+    * `fix_branch?`
+    * `release_branch?`
+    * `support_branch?`
+
+ * Added details to error messages to clarify them.
 
 ## 0.3.0 (August 23, 2017)
 

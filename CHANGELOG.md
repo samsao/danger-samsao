@@ -1,4 +1,10 @@
-## 0.3.1 (In progress)
+## 0.3.2 (In progress)
+
+#### Features 
+ 
+ * 
+
+## 0.3.1 (August 30, 2017)
 
 #### Features
 

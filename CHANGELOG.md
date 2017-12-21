@@ -4,6 +4,9 @@
  
  * 
 
+### Security Fix
+ * Bump vulnerable yard version to 0.9.12
+
 ## 0.3.1 (August 30, 2017)
 
 #### Features
